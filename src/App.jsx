@@ -3,13 +3,16 @@ import Inicial from "./Inicial/Inicial";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 import RegisterForm from "./RegisterForm/RegisterForm";
+import MiCuerpo from "./MiCuerpo/MiCuerpo";
 import { Switch, Route, withRouter } from "react-router-dom";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 import esLocale from "date-fns/locale/es";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 function App() {
   const renderRoutes = () => {
-    const loggedin = true;
+    const loggedin = false;
     if (loggedin) {
       return (
         <Switch>
@@ -17,6 +20,7 @@ function App() {
           <Route path="/login" render={() => <Home />} />
           <Route path="/register" render={() => <Home />} />
           <Route path="/registerform" render={() => <RegisterForm />} />
+          <Route path="/micuerpo" render={() => <MiCuerpo />} />
           <Route path="*" exact component={NotFound} />
         </Switch>
       );

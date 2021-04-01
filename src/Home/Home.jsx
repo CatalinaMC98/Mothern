@@ -17,6 +17,28 @@ function Home(props) {
     cardio: true,
     regimen: "Contributivo",
   };
+  const notificaciones = [
+    {
+      fecha: new Date("2020/08/17"),
+      espacialidad: "CARDIOO",
+      centroMedico: "reina sofia",
+    },
+    {
+      fecha: new Date("2020/08/17"),
+      espacialidad: "CARDIOO",
+      centroMedico: "reina sofia",
+    },
+    {
+      fecha: new Date("2020/08/17"),
+      espacialidad: "CARDIOO",
+      centroMedico: "reina sofia",
+    },
+    {
+      fecha: new Date("2020/08/17"),
+      espacialidad: "CARDIOO",
+      centroMedico: "reina sofia",
+    },
+  ];
   const semanas = "15";
   const containerRef = useRef();
   const [containerSize, setContainerSize] = useState({
@@ -289,11 +311,80 @@ function Home(props) {
             style={{
               display: "flex",
               flexDirection: "column",
-              height: "calc(100vh - 150px)",
-              backgroundColor: "red",
+              height: "calc(100vh - 160px)",
               overflowY: "scroll",
+              scrollbarWidth: "thin",
+              marginTop: 10,
             }}
-          ></div>
+          >
+            {notificaciones.map((notif, index) => {
+              return (
+                <div
+                  key={index}
+                  className="cardAgenda"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    border: "1px solid #CFC0FC",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      fontSize: 13,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    <div style={{ marginTop: 22, marginLeft: 22 }}>
+                      {notif.espacialidad}
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-end",
+                        justifyContent: "center",
+                        marginLeft: "auto",
+                        marginTop: 10,
+                        marginRight: 10,
+                      }}
+                    >
+                      <div>
+                        {notif.fecha.toLocaleDateString([], {
+                          weekday: "short",
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </div>
+                      <div style={{ fontSize: 18, fontWeight: "regular" }}>
+                        {notif.fecha.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      marginTop: "auto",
+                      marginBottom: 10,
+                      marginLeft: 22,
+                      display: "flex",
+                      flexDirection: "row",
+                      fontSize: 14,
+                      fontWeight: "light",
+                      height: 40,
+                      width: 200,
+                    }}
+                  >
+                    {notif.centroMedico}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </React.Fragment>
       );
     }
@@ -605,6 +696,9 @@ function Home(props) {
           className="Rectangle_13"
           style={{
             width: containerSize.width - 114,
+          }}
+          onClick={() => {
+            props.history.push("/micuerpo");
           }}
         >
           <rect
