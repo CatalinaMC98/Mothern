@@ -1,11 +1,42 @@
 import { withRouter } from "react-router-dom";
 import "./Home.css";
-import { useRef, useEffect, useState } from "react";
-function Home() {
-  const nombre = "mateo";
+import React, { useRef, useEffect, useState } from "react";
+function Home(props) {
+  const info = {
+    nombre: "Catalina Montoya",
+    birth: new Date("1996/08/17"),
+    height: 1.6,
+    bloodLetterType: "AB",
+    bloodSignType: "+",
+    tuber: true,
+    diab: true,
+    hiper: true,
+    pre: true,
+    ciru: true,
+    infer: true,
+    cardio: true,
+    regimen: "Contributivo",
+  };
   const semanas = "15";
   const containerRef = useRef();
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const [containerSize, setContainerSize] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  const [menuOpen, setMenuOpen] = useState(undefined);
+
+  const calcEdad = () => {
+    var today = new Date();
+    var birthDate = info.birth;
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
   const handleResize = () => {
     setContainerSize({
       width: containerRef.current.offsetWidth,
@@ -20,8 +51,290 @@ function Home() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const logout = () => {
+    console.log("LOGOUT"); //TODO
+  };
+  const renderMenu = () => {
+    if (menuOpen === "MENU") {
+      return (
+        <React.Fragment>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              className="lblNombreHome"
+              style={{ width: "calc(100% - 95px)" }}
+            >
+              {info.nombre}
+            </div>
+            <div
+              className="lbleditarHome"
+              onClick={() => {
+                props.history.push("/registerform");
+              }}
+            >
+              editar
+            </div>
+          </div>
+          <div className="containerMenuInfo">
+            <div
+              style={{
+                flex: 1,
+                marginTop: 10,
+                borderRight: "1px solid white",
+                width: 45,
+              }}
+            ></div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "calc(100% - 45px)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  marginLeft: -5,
+                  marginBottom: 15,
+                }}
+              >
+                <div className="dotHome"></div>
+                <div className="lblcontentHomeMenu">Semana gestacional</div>
+                <div className="lblcontentHomeMenuInfo">{semanas}</div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  marginLeft: -5,
+                  marginBottom: 15,
+                }}
+              >
+                <div className="dotHome"></div>
+                <div className="lblcontentHomeMenu">Edad</div>
+                <div className="lblcontentHomeMenuInfo">{calcEdad()} años</div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  marginLeft: -5,
+                  marginBottom: 15,
+                }}
+              >
+                <div className="dotHome"></div>
+                <div className="lblcontentHomeMenu">Estatura</div>
+                <div className="lblcontentHomeMenuInfo">{info.height} m</div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  marginLeft: -5,
+                  marginBottom: 15,
+                }}
+              >
+                <div className="dotHome"></div>
+                <div className="lblcontentHomeMenu">Grupo sanguíneo</div>
+                <div className="lblcontentHomeMenuInfo">
+                  {info.bloodLetterType + "" + info.bloodSignType}
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  marginLeft: -5,
+                  marginBottom: 15,
+                }}
+              >
+                <div className="dotHome"></div>
+                <div className="lblcontentHomeMenu">Antecedentes médicos</div>
+              </div>
+              {info.tuber && (
+                <div className="containerAntecendentesMenu">Tuberculosis</div>
+              )}
+              {info.diab && (
+                <div className="containerAntecendentesMenu">Diabetes</div>
+              )}
+              {info.hiper && (
+                <div className="containerAntecendentesMenu">Hipertensión</div>
+              )}
+              {info.pre && (
+                <div className="containerAntecendentesMenu">Preclamsia</div>
+              )}
+              {info.ciru && (
+                <div className="containerAntecendentesMenu">
+                  Cirugía pélvica
+                </div>
+              )}
+              {info.infer && (
+                <div className="containerAntecendentesMenu">Infertilidad</div>
+              )}
+              {info.cardio && (
+                <div className="containerAntecendentesMenu">
+                  Cardio/nefropatía
+                </div>
+              )}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  marginLeft: -5,
+                  marginTop: 15,
+                  marginBottom: 10,
+                }}
+              >
+                <div className="dotHome"></div>
+                <div className="lblcontentHomeMenu">Régimen de salud</div>
+              </div>
+              <div
+                className="containerAntecendentesMenu"
+                style={{ marginBottom: 0 }}
+              >
+                {info.regimen}
+              </div>
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    } else if (menuOpen === "CONFIG") {
+      return (
+        <React.Fragment>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              className="lblNombreHome"
+              style={{ width: "calc(100% - 95px)" }}
+            >
+              Configuraciones
+            </div>
+            <img
+              style={{
+                width: 30,
+                height: 30,
+                marginTop: 32,
+                marginLeft: "auto",
+                marginRight: 23,
+              }}
+              src="config.png"
+            ></img>
+          </div>
+          <div className="containerMenuInfo">
+            <div
+              style={{
+                width: 45,
+              }}
+            ></div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "calc(100% - 45px)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  marginLeft: -5,
+                  marginBottom: 15,
+                }}
+              >
+                <div className="dotHome"></div>
+                <div className="lblcontentHomeMenu" onClick={logout}>
+                  Cambiar Cuenta
+                </div>
+              </div>
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    } else if (menuOpen === "NOTIF") {
+      return (
+        <React.Fragment>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              className="lblNombreHome"
+              style={{ width: "calc(100% - 95px)" }}
+            >
+              Notificaciones
+            </div>
+            <img
+              style={{
+                width: 30,
+                height: 30,
+                marginTop: 32,
+                marginLeft: "auto",
+                marginRight: 23,
+              }}
+              src="notif.png"
+            ></img>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              height: "calc(100vh - 150px)",
+              backgroundColor: "red",
+              overflowY: "scroll",
+            }}
+          ></div>
+        </React.Fragment>
+      );
+    }
+  };
+
   return (
     <div className="container" ref={containerRef}>
+      {menuOpen !== undefined && (
+        <div className="menuContainer">
+          <img
+            style={{
+              width: 105,
+              height: 20,
+              left: (containerSize.width - 135) / 2,
+              top: 17,
+              position: "absolute",
+              cursor: "pointer",
+            }}
+            src="blueLogo.png"
+            onClick={() => {
+              setMenuOpen(undefined);
+            }}
+          ></img>
+          <img
+            style={{
+              width: 20,
+              height: 13,
+              right: 23,
+              top: 20,
+              position: "absolute",
+              cursor: "pointer",
+            }}
+            src="Group_117.png"
+            onClick={() => {
+              setMenuOpen(undefined);
+            }}
+          ></img>
+          <div className="menuBlueContainer">{renderMenu()}</div>
+        </div>
+      )}
+
       <div className="navBarContainer">
         <svg className="Rectangle_111" style={{ width: containerSize.width }}>
           <rect
@@ -159,9 +472,15 @@ function Home() {
           <span>Bienvenida,</span>
         </div>
         <div id="home">
-          <span>{nombre}</span>
+          <span>{info.nombre}</span>
         </div>
-        <div id="Group_116" style={{ left: containerSize.width - 47 }}>
+        <div
+          id="Group_116"
+          style={{ left: containerSize.width - 47, cursor: "pointer" }}
+          onClick={() => {
+            setMenuOpen("MENU");
+          }}
+        >
           <svg className="Rectangle_107">
             <rect
               id="Rectangle_107"
@@ -197,71 +516,11 @@ function Home() {
           </svg>
         </div>
       </div>
-      <div className="containerFooter">
-        <div className="homeFooter">
-          <svg
-            className="Rectangle_55"
-            style={{ width: containerSize.width - 16 }}
-          >
-            <rect
-              id="Rectangle_55"
-              rx="0"
-              ry="0"
-              x="0"
-              y="0"
-              width={containerSize.width - 16}
-              height="71"
-            ></rect>
-          </svg>
-          <svg className="Rectangle_56" style={{ width: containerSize.width }}>
-            <rect
-              id="Rectangle_56"
-              rx="16"
-              ry="16"
-              x="0"
-              y="0"
-              width={containerSize.width}
-              height="59.165"
-            ></rect>
-          </svg>
-          <svg className="Rectangle_57" style={{ width: containerSize.width }}>
-            <rect
-              id="Rectangle_57"
-              rx="0"
-              ry="0"
-              x="0"
-              y="0"
-              width={containerSize.width}
-              height="11.442"
-            ></rect>
-          </svg>
-          <svg
-            className="Ellipse_2"
-            style={{ left: (containerSize.width - 52) / 2 }}
-          >
-            <ellipse id="Ellipse_2" rx="26" ry="26" cx="26" cy="26"></ellipse>
-          </svg>
-          <div id="Group_10" style={{ left: (containerSize.width - 36) / 2 }}>
-            <img id="Path_15" src="Path_15.png" />
-            <img id="Path_16" src="Path_16.png" />
-          </div>
-          <img
-            id="Subtraction_1"
-            src="Subtraction_1.png"
-            style={{ left: containerSize.width / 2 + 18 }}
-          />
-          <img
-            id="Subtraction_2"
-            src="Subtraction_2.png"
-            style={{ left: containerSize.width / 2 - 42 }}
-          />
-        </div>
-      </div>
       <div className="sidebar">
         <svg
           className="Rectangle_64"
           style={{
-            height: containerSize.height - 260,
+            height: containerSize.height - 200,
             right: 18,
           }}
         >
@@ -272,13 +531,13 @@ function Home() {
             x="0"
             y="0"
             width="45"
-            height={containerSize.height - 260}
+            height={containerSize.height - 200}
           ></rect>
         </svg>
         <svg
           className="Rectangle_63"
           style={{
-            height: containerSize.height - 340,
+            height: containerSize.height - 300,
             right: 18,
           }}
         >
@@ -289,12 +548,19 @@ function Home() {
             x="0"
             y="0"
             width="45"
-            height={containerSize.height - 340}
+            height={containerSize.height - 300}
           ></rect>
         </svg>
         <div
           id="Group_12"
-          style={{ right: 28, top: containerSize.height / 2 - 20 }}
+          style={{
+            right: 28,
+            top: containerSize.height / 2 - 20,
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setMenuOpen("NOTIF");
+          }}
         >
           <svg className="Path_17" viewBox="-2721.406 2455.024 24.386 23.807">
             <path
@@ -311,7 +577,14 @@ function Home() {
         </div>
         <div
           id="Group_14"
-          style={{ right: 28, top: containerSize.height / 2 + 60 }}
+          style={{
+            right: 28,
+            top: containerSize.height / 2 + 60,
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setMenuOpen("CONFIG");
+          }}
         >
           <svg className="Path_24" viewBox="-1642.761 1247.138 28.486 28.686">
             <path
@@ -328,7 +601,12 @@ function Home() {
         </div>
       </div>
       <div className="containerBtns">
-        <svg className="Rectangle_13">
+        <svg
+          className="Rectangle_13"
+          style={{
+            width: containerSize.width - 114,
+          }}
+        >
           <rect
             id="Rectangle_13"
             rx="16"
@@ -344,6 +622,7 @@ function Home() {
           style={{
             top:
               161 + containerSize.height / 4 + containerSize.height * 0.15 + 38,
+            width: containerSize.width - 114,
           }}
         >
           <rect
@@ -353,12 +632,15 @@ function Home() {
             x="0"
             y="0"
             width={containerSize.width - 114}
-            height={containerSize.height * 0.15}
+            height={containerSize.height * 0.24}
           ></rect>
         </svg>
         <svg
           className="Rectangle_61"
-          style={{ top: 161 + containerSize.height / 4 + 19 }}
+          style={{
+            top: 161 + containerSize.height / 4 + 19,
+            width: containerSize.width - 114,
+          }}
         >
           <rect
             id="Rectangle_61"
@@ -376,7 +658,7 @@ function Home() {
         <div
           id="Agenda_mdica"
           style={{
-            top: 150 + containerSize.height / 4 + containerSize.height * 0.3,
+            top: 150 + containerSize.height / 4 + containerSize.height * 0.37,
           }}
         >
           <span>Agenda médica</span>
@@ -420,7 +702,7 @@ function Home() {
         <div
           id="Group_106"
           style={{
-            top: 105 + containerSize.height / 4 + containerSize.height * 0.3,
+            top: 105 + containerSize.height / 4 + containerSize.height * 0.35,
           }}
         >
           <img id="Group_99" src="Group_99.png"></img>
