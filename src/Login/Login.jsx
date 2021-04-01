@@ -1,6 +1,10 @@
 import { withRouter } from "react-router-dom";
 import "./Login.css";
 import { useRef, useEffect, useState } from "react";
+import { useAuth } from "reactfire";
+import 'firebase/auth';
+import firebase from 'firebase/app';
+
 function Login(props) {
   const containerRef = useRef();
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
@@ -12,6 +16,8 @@ function Login(props) {
       height: containerRef.current.offsetHeight,
     });
   };
+  const auth = useAuth();
+
   useEffect(() => {
     // Pone un listener para escuchar los cambio en el tamaño de la pantalla
     window.addEventListener("resize", handleResize);
@@ -22,7 +28,16 @@ function Login(props) {
   }, []);
 
   const login = () => {
-    console.log("login");
+    auth.signInWithEmailAndPassword(email, password).then(() => {  
+      props.history.push("/");
+    }).catch((err) =>{ 
+      console.log(err)
+    });
+  };
+
+  const loginWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithRedirect(provider);
   };
 
   return (
@@ -227,7 +242,7 @@ function Login(props) {
           top: containerSize.height * 0.85,
         }}
       >
-        <span>Iniciar sesión con Google</span>
+        <span onClick={loginWithGoogle}>Iniciar sesión con Google</span>
       </div>
     </div>
   );
