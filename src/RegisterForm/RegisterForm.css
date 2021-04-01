@@ -1,8 +1,9 @@
 .formContainerRegister {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   background: url("Path_1054.png");
   background-size: contain;
+  overflow-y: scroll;
 }
 .goBackRegisterForm {
   width: 100%;

@@ -6,13 +6,8 @@ import RegisterForm from "./RegisterForm/RegisterForm";
 import { Switch, Route, withRouter } from "react-router-dom";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 import esLocale from "date-fns/locale/es";
-import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
-function App(props) {
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+function App() {
   const renderRoutes = () => {
     const loggedin = true;
     if (loggedin) {

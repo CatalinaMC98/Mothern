@@ -43,6 +43,14 @@ function RegisterForm(props) {
     infer: false,
     cardio: false,
     prefAlim: "",
+    alcohol: "",
+    drogas: "",
+    cigarrillo: "",
+    empleo: "",
+    estadoCiv: "",
+    titulo: "",
+    estrato: 1,
+    regimen: "",
   });
 
   const handleNext = () => {
@@ -51,7 +59,7 @@ function RegisterForm(props) {
     } else if (step === 2) {
       setStep(3);
     } else {
-      console.log(info);
+      console.log(info); //TODO
     }
   };
 
@@ -425,9 +433,9 @@ function RegisterForm(props) {
                 </div>
                 <div style={{ marginLeft: 40 }}>
                   <PurpleSwitch
-                    checked={info.Alcohol}
+                    checked={info.alcohol}
                     onChange={handleChangeCheck}
-                    name="Alcohol"
+                    name="alcohol"
                     inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
@@ -447,10 +455,10 @@ function RegisterForm(props) {
                 </div>
                 <div style={{ marginLeft: 40 }}>
                   <PurpleSwitch
-                    checked={info.Drogas}
+                    checked={info.drogas}
                     onChange={handleChangeCheck}
                     color="primary"
-                    name="Drogas"
+                    name="drogas"
                     inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
@@ -470,10 +478,10 @@ function RegisterForm(props) {
                 </div>
                 <div style={{ marginLeft: 40 }}>
                   <PurpleSwitch
-                    checked={info.Cigarrillo}
+                    checked={info.cigarrillo}
                     onChange={handleChangeCheck}
                     color="primary"
-                    name="Cigarrillo"
+                    name="cigarrillo"
                     inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
@@ -483,7 +491,104 @@ function RegisterForm(props) {
         </div>
       );
     } else {
-      return "Finalización";
+      return (
+        <div>
+          <div className="lblForm">Lee y escribe</div>
+          <PurpleSwitch
+            checked={info.lee}
+            onChange={handleChangeCheck}
+            color="primary"
+            name="lee"
+            inputProps={{ "aria-label": "primary checkbox" }}
+          />
+          <div className="lblForm" style={{ marginTop: 5 }}>
+            Educación
+          </div>
+          <FormControl style={{ width: 120, marginTop: 10 }}>
+            <NativeSelect
+              value={info.titulo}
+              name="titulo"
+              onChange={handleChange}
+            >
+              <option value="Ninguna">Ninguna</option>
+              <option value="Primaria">Primaria</option>
+              <option value="Bachiller">Bachiller</option>
+              <option value="Pregrado">Pregrado</option>
+              <option value="Posgrado">Posgrado</option>
+            </NativeSelect>
+            <FormHelperText></FormHelperText>
+          </FormControl>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div className="lblForm">Estado civil</div>
+              <FormControl style={{ width: 120, marginTop: 10 }}>
+                <NativeSelect
+                  value={info.estadoCiv}
+                  name="estadoCiv"
+                  onChange={handleChange}
+                >
+                  <option value="Soltera">Soltera</option>
+                  <option value="Casada">Casada</option>
+                  <option value="Divorciada">Divorciada</option>
+                  <option value="Viuda">Viuda</option>
+                </NativeSelect>
+                <FormHelperText></FormHelperText>
+              </FormControl>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div className="lblForm" style={{ marginLeft: 20 }}>
+                Empleo
+              </div>
+              <FormControl
+                style={{ width: 160, marginTop: 10, marginLeft: 20 }}
+              >
+                <NativeSelect
+                  value={info.empleo}
+                  name="empleo"
+                  onChange={handleChange}
+                >
+                  <option value="Tiempo Completo">Tiempo Completo</option>
+                  <option value="Medio Tiempo">Medio Tiempo</option>
+                  <option value="Por hora">Por hora</option>
+                  <option value="Estudiante">Estudiante</option>
+                  <option value="Desempleada">Desempleada</option>
+                  <option value="Ama de casa">Ama de casa</option>
+                </NativeSelect>
+                <FormHelperText></FormHelperText>
+              </FormControl>
+            </div>
+          </div>
+          <div className="lblForm">Estrato socioeconómico</div>
+          <FormControl style={{ width: 50, marginTop: 10 }}>
+            <NativeSelect
+              value={info.estrato}
+              name="estrato"
+              onChange={handleChange}
+            >
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+              <option value={4}>4</option>
+              <option value={5}>5</option>
+              <option value={6}>6</option>
+            </NativeSelect>
+            <FormHelperText></FormHelperText>
+          </FormControl>
+          <div className="lblForm">Régimen de salud</div>
+          <FormControl style={{ width: 50, marginTop: 10 }}>
+            <NativeSelect
+              value={info.regimen}
+              name="regimen"
+              onChange={handleChange}
+            >
+              <option value={"Subsidiado"}>Subsidiado</option>
+              <option value={"Contributivo"}>Contributivo</option>
+              <option value={"Vinculado"}>Vinculado</option>
+            </NativeSelect>
+            <FormHelperText></FormHelperText>
+          </FormControl>
+        </div>
+      );
     }
   };
   return (

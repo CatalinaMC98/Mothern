@@ -235,7 +235,10 @@
   top: 88px;
   position: absolute;
   overflow: visible;
-  width: 89px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100vw - 160px);
   white-space: nowrap;
   text-align: left;
   font-family: Lato;
@@ -489,7 +492,6 @@
 .Rectangle_61 {
   filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
   position: absolute;
-  overflow: visible;
   left: 29px;
   top: 348px;
 }
@@ -612,4 +614,106 @@
   left: 0px;
   top: 0px;
   overflow: visible;
+}
+
+.menuContainer {
+  background-color: #f5f5f5;
+  border-radius: 16px 0 0 30px;
+  position: absolute;
+  width: calc(100vw - 29px);
+  height: 100vh;
+  z-index: 10;
+  right: 0;
+}
+
+.menuBlueContainer {
+  background-color: #ace4fe;
+  border-radius: 30px 0 0 30px;
+  position: absolute;
+  width: calc(100vw - 29px);
+  height: calc(100vh - 56px);
+  z-index: 10;
+  right: 0;
+  bottom: 0;
+}
+
+.lblNombreHome {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 23px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 28px;
+  margin-right: 5px;
+  margin-top: 33px;
+  color: black;
+  letter-spacing: 0.3px;
+}
+
+.lbleditarHome {
+  cursor: pointer;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  margin-top: 38px;
+  color: #606060;
+  letter-spacing: 0.3px;
+  text-decoration: underline;
+}
+
+.containerMenuInfo {
+  display: -ms-flex;
+  display: -webkit-flex;
+  display: flex;
+  margin-top: 30px;
+}
+
+.dotHome {
+  width: 9px;
+  height: 9px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.lblcontentHomeMenu {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 16px;
+  color: white;
+  letter-spacing: 0.3px;
+  margin-left: 15px;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.lblcontentHomeMenuInfo {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+  letter-spacing: 0.3px;
+  margin-left: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 33px;
+}
+
+.containerAntecendentesMenu {
+  background-color: #d6f2ff;
+  color: #606060;
+  font-family: Lato;
+  font-style: italic;
+  font-weight: lighter;
+  font-size: 16px;
+  border-radius: 16px;
+  margin-left: 37px;
+  width: 130px;
+  padding-left: 12px;
+  margin-bottom: 7px;
 }
