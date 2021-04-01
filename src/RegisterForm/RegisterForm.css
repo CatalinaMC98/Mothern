@@ -1,0 +1,107 @@
+.formContainerRegister {
+  width: 100vw;
+  min-height: 100vh;
+  background: url("Path_1054.png");
+  background-size: contain;
+}
+.goBackRegisterForm {
+  width: 100%;
+  height: 57px;
+  background-color: #e6deff;
+  position: absolute;
+  border-radius: 37px;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.registerFormContainer {
+  background-color: white;
+  min-height: calc(85vh - 9px);
+  width: calc(100vw - 16px);
+  margin-left: 8px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.paddingRegisterForm {
+  width: 100%;
+  height: 9px;
+}
+.registerFormGoBack {
+  margin-left: 40px;
+}
+.registerFormGoBackTitle {
+  white-space: nowrap;
+  text-align: center;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  color: #626262;
+  letter-spacing: 0.3px;
+  width: calc(100% - 106px);
+}
+
+.registerFormFooter {
+  width: 100%;
+  height: 15vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.registerFormDots {
+  margin-top: 12px;
+}
+
+.RegisterRectangle_18 {
+  width: 150px;
+  height: 33px;
+  cursor: pointer;
+  background-color: #ade4ff;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+}
+#SIGUIENTE {
+  overflow: visible;
+  width: 97px;
+  white-space: nowrap;
+  text-align: center;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 1);
+  letter-spacing: 0.3px;
+}
+
+.inputTxt {
+  white-space: nowrap;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+}
+
+.lblForm {
+  font-size: 16px;
+  color: #8b8b8b;
+
+  margin-top: 20px;
+}
+
+.checkBoxCont .lblForm {
+  width: 120px;
+}

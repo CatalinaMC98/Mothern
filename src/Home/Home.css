@@ -287,12 +287,6 @@
   top: 10px;
 }
 
-.containerHome {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
-
 .navBarContainer {
   position: relative;
 }

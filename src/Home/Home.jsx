@@ -21,7 +21,7 @@ function Home() {
     };
   }, []);
   return (
-    <div className="containerHome" ref={containerRef}>
+    <div className="container" ref={containerRef}>
       <div className="navBarContainer">
         <svg className="Rectangle_111" style={{ width: containerSize.width }}>
           <rect
