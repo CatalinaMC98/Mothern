@@ -12,39 +12,51 @@ import {
   DateTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
+
+import { useUser} from 'reactfire';
+import { useAuth } from "reactfire";
+import 'firebase/auth';
+
 function App(props) {
+
+  const { data: user } = useUser();
+  const auth = useAuth();
   const renderRoutes = () => {
-    const loggedin = true;
+  
+    /*auth.signOut();
+    console.log(user);*/  
+    
+    const loggedin = user !== null && user !== undefined;
     if (loggedin) {
       return (
-        <Switch>
-          <Route exact path="/" render={() => <Home />} />
-          <Route path="/login" render={() => <Home />} />
-          <Route path="/register" render={() => <Home />} />
-          <Route path="/registerform" render={() => <RegisterForm />} />
-          <Route path="*" exact component={NotFound} />
-        </Switch>
+          <Switch>
+            <Route exact path="/" render={() => <Home />} />
+            <Route path="/login" render={() => <Home />} />
+            <Route path="/register" render={() => <Home />} />
+            <Route path="/registerform" render={() => <RegisterForm />} />
+            <Route path="*" exact component={NotFound} />
+          </Switch>
       );
     } else {
       return (
-        <Switch>
-          <Route exact path="/" render={() => <Inicial />} />
-          <Route path="/login" render={() => <Login />} />
-          <Route path="/register" render={() => <Register />} />
+          <Switch>
+            <Route exact path="/" render={() => <Inicial />} />
+            <Route path="/login" render={() => <Login />} />
+            <Route path="/register" render={() => <Register />} />
 
-          <Route path="*" exact component={NotFound} />
-        </Switch>
+            <Route path="*" exact component={NotFound} />
+          </Switch>
       );
     }
   };
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-      <div className="App">
-        <h1 className="wdn-text-hidden">Mothern</h1>
-        <div className="appContainer">{renderRoutes()}</div>
-      </div>
-    </MuiPickersUtilsProvider>
+      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+        <div className="App">
+          <h1 className="wdn-text-hidden">Mothern</h1>
+          <div className="appContainer">{renderRoutes()}</div>
+        </div>
+      </MuiPickersUtilsProvider>
   );
 }
 
