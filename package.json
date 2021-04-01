@@ -18,12 +18,9 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-select": "^4.3.0",
-<<<<<<< HEAD
     "react-slick": "^0.28.1",
-    "slick-carousel": "^1.8.1"
-=======
+    "slick-carousel": "^1.8.1",
     "reactfire": "^3.0.0-rc.0"
->>>>>>> ce2aede5afe2c7d981ac92a88f22d7e57f55b812
   },
   "devDependencies": {
     "eslint": "^7.18.0",
