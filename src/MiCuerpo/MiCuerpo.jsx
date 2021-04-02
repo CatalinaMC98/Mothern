@@ -9,7 +9,6 @@ function MiCuerpo(props) {
   const sliderRef = useRef();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [settingPeso, setSettingPeso] = useState(false);
-  const [settingIMC, setSettingIMC] = useState(false);
   const semanas = [
     {
       numero: 1,
@@ -64,6 +63,7 @@ function MiCuerpo(props) {
         pesoData.push({ date: semana.numero, value: semana.peso });
       }
     });
+    console.log(pesoData);
     mainPeso.redefine("data", pesoData);
     mainPeso.redefine("height", chartPesoRef.current.offsetHeight);
     mainPeso.redefine("axes", ["Semana", "Peso-Kg"]);
@@ -127,16 +127,6 @@ function MiCuerpo(props) {
             className="curtain"
             onClick={() => {
               setSettingPeso(false);
-            }}
-          ></div>
-        </div>
-      )}
-      {settingIMC && (
-        <div>
-          <div
-            className="curtain"
-            onClick={() => {
-              setSettingIMC(false);
             }}
           ></div>
           <div className="dropUpCard"></div>
@@ -313,6 +303,7 @@ function MiCuerpo(props) {
                   justifyContent: "center",
                   backgroundColor: "white",
                   position: "relative",
+                  cursor: "pointer",
                   marginRight: 5,
                 }}
                 className="weightCardMiCuerpo"
@@ -346,11 +337,12 @@ function MiCuerpo(props) {
                   alignItems: "center",
                   position: "relative",
                   justifyContent: "center",
+                  cursor: "pointer",
                   backgroundColor: "white",
                   marginLeft: 5,
                 }}
                 onClick={() => {
-                  setSettingIMC(true);
+                  setSettingPeso(true);
                 }}
                 className="weightCardMiCuerpo"
               >
@@ -363,7 +355,7 @@ function MiCuerpo(props) {
                   }}
                 >
                   IMC (%)
-                </div>{" "}
+                </div>
                 <div className="pesoMiCuerpoCardIngrey">
                   {semanas[currentSlide].imc === undefined
                     ? "--"

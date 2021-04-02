@@ -12,7 +12,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 function App() {
   const renderRoutes = () => {
-    const loggedin = true;
+    const loggedin = false;
     if (loggedin) {
       return (
         <Switch>
@@ -31,7 +31,7 @@ function App() {
           <Route path="/login" render={() => <Login />} />
           <Route path="/register" render={() => <Register />} />
 
-          <Route path="*" exact component={NotFound} />
+          <Route path="*" exact component={Inicial} />
         </Switch>
       );
     }
