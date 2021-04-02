@@ -12,7 +12,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 function App() {
   const renderRoutes = () => {
-    const loggedin = false;
+    const loggedin = true;
     if (loggedin) {
       return (
         <Switch>
@@ -26,24 +26,24 @@ function App() {
       );
     } else {
       return (
-          <Switch>
-            <Route exact path="/" render={() => <Inicial />} />
-            <Route path="/login" render={() => <Login />} />
-            <Route path="/register" render={() => <Register />} />
+        <Switch>
+          <Route exact path="/" render={() => <Inicial />} />
+          <Route path="/login" render={() => <Login />} />
+          <Route path="/register" render={() => <Register />} />
 
-            <Route path="*" exact component={NotFound} />
-          </Switch>
+          <Route path="*" exact component={NotFound} />
+        </Switch>
       );
     }
   };
 
   return (
-      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-        <div className="App">
-          <h1 className="wdn-text-hidden">Mothern</h1>
-          <div className="appContainer">{renderRoutes()}</div>
-        </div>
-      </MuiPickersUtilsProvider>
+    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+      <div className="App">
+        <h1 className="wdn-text-hidden">Mothern</h1>
+        <div className="appContainer">{renderRoutes()}</div>
+      </div>
+    </MuiPickersUtilsProvider>
   );
 }
 

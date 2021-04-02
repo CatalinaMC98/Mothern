@@ -1,7 +1,10 @@
 import { withRouter } from "react-router-dom";
 import "./MiCuerpo.css";
 import Slider from "react-slick";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { Runtime, Inspector } from "@observablehq/runtime";
+import notebook from "@nacaceres/animated-line-chart";
+
 function MiCuerpo(props) {
   const sliderRef = useRef();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -14,36 +17,80 @@ function MiCuerpo(props) {
       imc: 1,
     },
     {
-      numero: 1,
+      numero: 2,
       peso: undefined,
       imc: 50.3,
     },
     {
-      numero: 1,
+      numero: 3,
+      peso: 110,
+      imc: 1,
+    },
+    {
+      numero: 4,
+      peso: 140,
+      imc: 1,
+    },
+    {
+      numero: 5,
       peso: 120,
       imc: 1,
     },
     {
-      numero: 1,
-      peso: 120,
+      numero: 6,
+      peso: 110,
       imc: 1,
     },
     {
-      numero: 1,
-      peso: 120,
-      imc: 1,
-    },
-    {
-      numero: 1,
-      peso: 120,
-      imc: 1,
-    },
-    {
-      numero: 1,
+      numero: 7,
       peso: 120,
       imc: 1,
     },
   ];
+
+  const chartPesoRef = useRef();
+  const chartIMCRef = useRef();
+
+  //Peso Chart
+  useEffect(() => {
+    const runtime = new Runtime();
+    //Peso Chart
+    const mainPeso = runtime.module(notebook, (name) => {
+      if (name === "chart") return new Inspector(chartPesoRef.current);
+    });
+    const pesoData = [];
+    semanas.map((semana) => {
+      if (semana.numero !== undefined && semana.peso !== undefined) {
+        pesoData.push({ date: semana.numero, value: semana.peso });
+      }
+    });
+    mainPeso.redefine("data", pesoData);
+    mainPeso.redefine("height", chartPesoRef.current.offsetHeight);
+    mainPeso.redefine("axes", ["Semana", "Peso-Kg"]);
+    return () => {
+      runtime.dispose();
+    };
+  }, []);
+
+  //IMC Chart
+  useEffect(() => {
+    const runtime = new Runtime();
+    const mainImc = runtime.module(notebook, (name) => {
+      if (name === "chart") return new Inspector(chartIMCRef.current);
+    });
+    const imcData = [];
+    semanas.map((semana) => {
+      if (semana.numero !== undefined && semana.imc !== undefined) {
+        imcData.push({ date: semana.numero, value: semana.imc });
+      }
+    });
+    mainImc.redefine("data", imcData);
+    mainImc.redefine("height", chartIMCRef.current.offsetHeight);
+    mainImc.redefine("axes", ["Semana", "IMC"]);
+    return () => {
+      runtime.dispose();
+    };
+  }, []);
 
   var settings = {
     dots: false,
@@ -57,16 +104,12 @@ function MiCuerpo(props) {
 
   const calcPesoGraph = () => {
     return (
-      <div
-        style={{ width: "100vw", height: "100vw", backgroundColor: "red" }} //Caceres se encarga
-      ></div>
+      <div style={{ width: "100vw", height: "100vw" }} ref={chartPesoRef}></div>
     );
   };
   const calcIMCGraph = () => {
     return (
-      <div
-        style={{ width: "100vw", height: "100vw", backgroundColor: "red" }} //Caceres se encarga
-      ></div>
+      <div style={{ width: "100vw", height: "100vw" }} ref={chartIMCRef}></div>
     );
   };
 
