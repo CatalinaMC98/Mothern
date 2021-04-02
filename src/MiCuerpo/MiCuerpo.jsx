@@ -1,12 +1,14 @@
 import { withRouter } from "react-router-dom";
 import "./MiCuerpo.css";
 import Slider from "react-slick";
+import TextField from "@material-ui/core/TextField";
 import { useRef, useState } from "react";
 function MiCuerpo(props) {
   const sliderRef = useRef();
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(6);
   const [settingPeso, setSettingPeso] = useState(false);
-  const semanas = [
+  const [tempPeso, setTempPeso] = useState(0);
+  const [semanas, setSemanas] = useState([
     {
       numero: 1,
       peso: 120,
@@ -42,8 +44,7 @@ function MiCuerpo(props) {
       peso: 120,
       imc: 1,
     },
-  ];
-
+  ]);
   var settings = {
     dots: false,
     infinite: false,
@@ -52,6 +53,15 @@ function MiCuerpo(props) {
     arrows: false,
     swipeToSlide: true,
     beforeChange: (current, next) => setCurrentSlide(next),
+    initialSlide: semanas.length - 1,
+  };
+  const handlePesoChange = () => {
+    let semanasTemp = [...semanas];
+    semanasTemp[currentSlide].peso = tempPeso;
+    semanasTemp[currentSlide].imc = 0;
+    //TODO calcular imc y guardar en firebase
+    setSemanas(semanasTemp);
+    setSettingPeso(false);
   };
 
   const calcPesoGraph = () => {
@@ -85,7 +95,76 @@ function MiCuerpo(props) {
               setSettingPeso(false);
             }}
           ></div>
-          <div className="dropUpCard"></div>
+          <div
+            className="dropUpCard"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 24,
+                marginBottom: 44,
+              }}
+            >
+              Mi Peso
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: 171,
+                  height: 64,
+                  borderRadius: 16,
+                  backgroundColor: "#EDF9FF",
+                }}
+              >
+                <TextField
+                  style={{
+                    border: "none",
+                    width: 160,
+                    marginLeft: 5,
+                  }}
+                  label="Peso"
+                  type="number"
+                  defaultValue={
+                    semanas[currentSlide].peso === undefined
+                      ? 0
+                      : semanas[currentSlide].peso
+                  }
+                  name="peso"
+                  onChange={(e) => {
+                    setTempPeso(e.target.value);
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: 16,
+                  backgroundColor: "#EDF9FF",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginLeft: 11,
+                }}
+                onClick={handlePesoChange}
+              >
+                OK
+              </div>
+            </div>
+          </div>
         </div>
       )}
       <div
@@ -265,6 +344,11 @@ function MiCuerpo(props) {
                 className="weightCardMiCuerpo"
                 onClick={() => {
                   setSettingPeso(true);
+                  setTempPeso(
+                    semanas[currentSlide].peso === undefined
+                      ? 0
+                      : semanas[currentSlide].peso
+                  );
                 }}
               >
                 <div

@@ -12,7 +12,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 function App() {
   const renderRoutes = () => {
-    const loggedin = false;
+    const loggedin = true;
     if (loggedin) {
       return (
         <Switch>
