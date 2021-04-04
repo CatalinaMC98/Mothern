@@ -1,22 +1,20 @@
 import { withRouter } from "react-router-dom";
 import "./Home.css";
 import React, { useRef, useEffect, useState } from "react";
+import { useUser, useAuth, useFirestore} from 'reactfire';
+
+
+
 function Home(props) {
-  const info = {
-    nombre: "Catalina Montoya",
-    birth: new Date("1996/08/17"),
-    height: 1.6,
-    bloodLetterType: "AB",
-    bloodSignType: "+",
-    tuber: true,
-    diab: true,
-    hiper: true,
-    pre: true,
-    ciru: true,
-    infer: true,
-    cardio: true,
-    regimen: "Contributivo",
-  };
+
+
+  const { data: user } = useUser();
+  const firestore = useFirestore();
+ 
+  const info = props.userInfo;
+
+  const auth = useAuth();
+
   const semanas = "15";
   const containerRef = useRef();
   const [containerSize, setContainerSize] = useState({
@@ -28,7 +26,7 @@ function Home(props) {
 
   const calcEdad = () => {
     var today = new Date();
-    var birthDate = info.birth;
+    var birthDate = info?.birth.toDate();
     var age = today.getFullYear() - birthDate.getFullYear();
     var m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
@@ -36,6 +34,13 @@ function Home(props) {
     }
     return age;
   };
+
+  const calcSemana = () => {
+    var today = new Date();
+    var lastMenstruation = info?.mDate.toDate();
+
+    return Math.round((today - lastMenstruation) / (7 * 24 * 60 * 60 * 1000));
+  }
 
   const handleResize = () => {
     setContainerSize({
@@ -53,9 +58,14 @@ function Home(props) {
   }, []);
 
   const logout = () => {
-    console.log("LOGOUT"); //TODO
+    auth.signOut().then(()=>{
+      props.history.push('/');
+    })
   };
+
+  
   const renderMenu = () => {
+    console.log(info);
     if (menuOpen === "MENU") {
       return (
         <React.Fragment>
@@ -64,7 +74,7 @@ function Home(props) {
               className="lblNombreHome"
               style={{ width: "calc(100% - 95px)" }}
             >
-              {info.nombre}
+              {info?.name}
             </div>
             <div
               className="lbleditarHome"
@@ -103,7 +113,7 @@ function Home(props) {
               >
                 <div className="dotHome"></div>
                 <div className="lblcontentHomeMenu">Semana gestacional</div>
-                <div className="lblcontentHomeMenuInfo">{semanas}</div>
+                <div className="lblcontentHomeMenuInfo">{calcSemana()}</div>
               </div>
               <div
                 style={{
@@ -146,7 +156,7 @@ function Home(props) {
                 <div className="dotHome"></div>
                 <div className="lblcontentHomeMenu">Grupo sanguíneo</div>
                 <div className="lblcontentHomeMenuInfo">
-                  {info.bloodLetterType + "" + info.bloodSignType}
+                  {info?.bloodLetterType + "" + info?.bloodSignType}
                 </div>
               </div>
               <div
@@ -379,7 +389,7 @@ function Home(props) {
           <span>Semanas</span>
         </div>
         <div id="ID15" style={{ left: containerSize.width - 74 }}>
-          <span>{semanas}</span>
+          <span>{calcSemana()}</span>
         </div>
         <div id="Group_11">
           <div id="Group_9">
@@ -472,7 +482,7 @@ function Home(props) {
           <span>Bienvenida,</span>
         </div>
         <div id="home">
-          <span>{info.nombre}</span>
+          <span>{info?.name}</span>
         </div>
         <div
           id="Group_116"

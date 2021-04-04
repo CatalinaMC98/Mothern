@@ -10,6 +10,9 @@ import Switch from "@material-ui/core/Switch";
 import { withStyles } from "@material-ui/core/styles";
 import { lightBlue } from "@material-ui/core/colors";
 import Create from "./create/Create";
+import { useUser, useFirestore} from "reactfire";
+
+
 const PurpleSwitch = withStyles({
   switchBase: {
     color: lightBlue[100],
@@ -25,41 +28,55 @@ const PurpleSwitch = withStyles({
 })(Switch);
 
 function RegisterForm(props) {
+
+
+  const { data: user } = useUser();
+  const personalInfoRef= useFirestore().collection('userinfo').doc(user.uid);
+
   const [step, setStep] = useState(1);
   const [info, setInfo] = useState({
-    name: "",
-    mDate: new Date(),
-    birth: new Date(),
-    height: 0,
-    bloodLetterType: "",
-    bloodSignType: "",
-    weightBefore: 0,
-    currentWeight: 0,
-    tuber: false,
-    diab: false,
-    hiper: false,
-    pre: false,
-    ciru: false,
-    infer: false,
-    cardio: false,
-    prefAlim: "",
-    alcohol: "",
-    drogas: "",
-    cigarrillo: "",
-    empleo: "",
-    estadoCiv: "",
-    titulo: "",
-    estrato: 1,
-    regimen: "",
+
+    name: props.userInfo.name || user.displayName || '',
+    mDate: props.userInfo.mDate.toDate() || new Date(),
+    birth: props.userInfo.birth.toDate() || new Date(),
+    height: props.userInfo.height || 0,
+    bloodLetterType: props.userInfo.bloodLetterType || "",
+    bloodSignType: props.userInfo.bloodSignType || "",
+    weightBefore: props.userInfo.weightBefore || 0,
+    currentWeight: props.userInfo.currentWeight || 0,
+    tuber: props.userInfo.tuber || false,
+    diab: props.userInfo.diab || false,
+    hiper: props.userInfo.hiper || false,
+    pre: props.userInfo.pre || false,
+    ciru: props.userInfo.ciru || false,
+    infer: props.userInfo.infer || false,
+    cardio: props.userInfo.cardio || false,
+    prefAlim: props.userInfo.prefAlim || "",
+    alcohol: props.userInfo.alcohol || "",
+    drogas: props.userInfo.drogas || "",
+    cigarrillo: props.userInfo.cigarrillo || "",
+    empleo: props.userInfo.empleo || "",
+    estadoCiv: props.userInfo.estadoCiv || "",
+    titulo: props.userInfo.titulo || "",
+    estrato: props.userInfo.estrato || 1,
+    regimen: props.userInfo.regimen || "",
+    registerForm: true
   });
 
   const handleNext = () => {
+    console.log('on handle next');
     if (step === 1) {
       setStep(2);
     } else if (step === 2) {
       setStep(3);
     } else {
-      console.log(info); //TODO
+      //Mandar información a Firebase
+      personalInfoRef.set(info).then(() => {
+        props.history.push('/');
+        location.reload();
+      }).catch((err) => {
+        console.log(err);
+      })
     }
   };
 
@@ -91,6 +108,7 @@ function RegisterForm(props) {
   const handleChangeCheck = (event) => {
     setInfo({ ...info, [event.target.name]: event.target.checked });
   };
+  
   const calcForm = () => {
     if (step === 1) {
       return (

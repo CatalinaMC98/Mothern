@@ -13,27 +13,50 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 
-import { useUser} from 'reactfire';
-import { useAuth } from "reactfire";
-import 'firebase/auth';
+import { useState } from "react";
+
+import { useUser, useAuth, useFirestore} from "reactfire";
+
 
 function App(props) {
 
   const { data: user } = useUser();
   const auth = useAuth();
+  const firestore = useFirestore();
+  const [userData, setUserData] = useState(null);
+
   const renderRoutes = () => {
   
     /*auth.signOut();
     console.log(user);*/  
-    
+
     const loggedin = user !== null && user !== undefined;
+
+
     if (loggedin) {
+      if(userData === null){
+        firestore.collection('userinfo').doc(user?.uid).get().then((response) => {
+          setUserData(response.data())
+        }).catch((err) => {
+          console.log(err);
+        });
+        return (<div></div>)
+      }
+      console.log('user data')
+      console.log(userData)
+      if(!userData?.registerForm && props.location.pathname !== '/registerform'){
+        props.history.push("/registerform");
+      }
+      else if(userData?.registerForm && props.location.pathname !== '/' && props.location.pathname !== '/registerform'){
+        props.history.push("/");
+      }
+
       return (
           <Switch>
-            <Route exact path="/" render={() => <Home />} />
-            <Route path="/login" render={() => <Home />} />
-            <Route path="/register" render={() => <Home />} />
-            <Route path="/registerform" render={() => <RegisterForm />} />
+            <Route exact path="/" render={() => <Home userInfo={userData}/>} />
+            <Route path="/login" render={() => <Home userInfo={userData}/>} />
+            <Route path="/register" render={() => <Home userInfo={userData}/>} />
+            <Route path="/registerform" render={() => <RegisterForm userInfo={userData}/>} />
             <Route path="*" exact component={NotFound} />
           </Switch>
       );
