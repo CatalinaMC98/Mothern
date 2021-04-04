@@ -3,35 +3,28 @@ import Inicial from "./Inicial/Inicial";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 import RegisterForm from "./RegisterForm/RegisterForm";
+import MiCuerpo from "./MiCuerpo/MiCuerpo";
 import { Switch, Route, withRouter } from "react-router-dom";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 import esLocale from "date-fns/locale/es";
-import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import { useState } from "react";
 
-import { useUser, useAuth, useFirestore} from "reactfire";
+import { useUser, useFirestore} from "reactfire";
 
 
 function App(props) {
 
   const { data: user } = useUser();
-  const auth = useAuth();
   const firestore = useFirestore();
   const [userData, setUserData] = useState(null);
 
   const renderRoutes = () => {
   
-    /*auth.signOut();
-    console.log(user);*/  
-
     const loggedin = user !== null && user !== undefined;
-
 
     if (loggedin) {
       if(userData === null){
@@ -52,6 +45,7 @@ function App(props) {
       }
 
       return (
+<<<<<<< HEAD
           <Switch>
             <Route exact path="/" render={() => <Home userInfo={userData}/>} />
             <Route path="/login" render={() => <Home userInfo={userData}/>} />
@@ -59,27 +53,37 @@ function App(props) {
             <Route path="/registerform" render={() => <RegisterForm userInfo={userData}/>} />
             <Route path="*" exact component={NotFound} />
           </Switch>
+=======
+        <Switch>
+          <Route exact path="/" render={() => <Home />} />
+          <Route path="/login" render={() => <Home />} />
+          <Route path="/register" render={() => <Home />} />
+          <Route path="/registerform" render={() => <RegisterForm />} />
+          <Route path="/micuerpo" render={() => <MiCuerpo />} />
+          <Route path="*" exact component={NotFound} />
+        </Switch>
+>>>>>>> e8b580af138a6080ab5fa614b5363ac0d0a29357
       );
     } else {
       return (
-          <Switch>
-            <Route exact path="/" render={() => <Inicial />} />
-            <Route path="/login" render={() => <Login />} />
-            <Route path="/register" render={() => <Register />} />
+        <Switch>
+          <Route exact path="/" render={() => <Inicial />} />
+          <Route path="/login" render={() => <Login />} />
+          <Route path="/register" render={() => <Register />} />
 
-            <Route path="*" exact component={NotFound} />
-          </Switch>
+          <Route path="*" exact component={Inicial} />
+        </Switch>
       );
     }
   };
 
   return (
-      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-        <div className="App">
-          <h1 className="wdn-text-hidden">Mothern</h1>
-          <div className="appContainer">{renderRoutes()}</div>
-        </div>
-      </MuiPickersUtilsProvider>
+    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+      <div className="App">
+        <h1 className="wdn-text-hidden">Mothern</h1>
+        <div className="appContainer">{renderRoutes()}</div>
+      </div>
+    </MuiPickersUtilsProvider>
   );
 }
 

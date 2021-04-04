@@ -633,8 +633,25 @@
   width: calc(100vw - 29px);
   height: calc(100vh - 56px);
   z-index: 10;
+  overflow: hidden;
+  overflow-x: hidden;
+  scrollbar-color: grey transparent;
+  scrollbar-width: none;
+  overflow-y: scroll;
   right: 0;
   bottom: 0;
+}
+.menuBlueContainer::-webkit-scrollbar {
+  width: 7px;
+}
+
+.menuBlueContainer::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+}
+
+.menuBlueContainer::-webkit-scrollbar-thumb:vertical {
+  background-color: grey;
+  border-radius: 10px;
 }
 
 .lblNombreHome {
@@ -716,4 +733,12 @@
   width: 130px;
   padding-left: 12px;
   margin-bottom: 7px;
+}
+
+.cardAgenda {
+  width: calc(100% - 30px);
+  height: 120px;
+  background-color: white;
+  margin: 15px;
+  border-radius: 16px;
 }

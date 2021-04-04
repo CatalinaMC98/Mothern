@@ -4,6 +4,21 @@
   background: url("Path_1054.png");
   background-size: contain;
   overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+.formContainerRegister::-webkit-scrollbar {
+  width: 7px;
+}
+
+.formContainerRegister::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+}
+
+.formContainerRegister::-webkit-scrollbar-thumb:vertical {
+  background-color: grey;
+  border-radius: 10px;
 }
 .goBackRegisterForm {
   width: 100%;
