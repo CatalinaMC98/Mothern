@@ -45,24 +45,14 @@ function App(props) {
       }
 
       return (
-<<<<<<< HEAD
           <Switch>
             <Route exact path="/" render={() => <Home userInfo={userData}/>} />
             <Route path="/login" render={() => <Home userInfo={userData}/>} />
             <Route path="/register" render={() => <Home userInfo={userData}/>} />
             <Route path="/registerform" render={() => <RegisterForm userInfo={userData}/>} />
+            <Route path="/micuerpo" render={() => <MiCuerpo />} />
             <Route path="*" exact component={NotFound} />
           </Switch>
-=======
-        <Switch>
-          <Route exact path="/" render={() => <Home />} />
-          <Route path="/login" render={() => <Home />} />
-          <Route path="/register" render={() => <Home />} />
-          <Route path="/registerform" render={() => <RegisterForm />} />
-          <Route path="/micuerpo" render={() => <MiCuerpo />} />
-          <Route path="*" exact component={NotFound} />
-        </Switch>
->>>>>>> e8b580af138a6080ab5fa614b5363ac0d0a29357
       );
     } else {
       return (
