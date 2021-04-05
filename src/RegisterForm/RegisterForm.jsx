@@ -70,6 +70,7 @@ function RegisterForm(props) {
       personalInfoRef
         .set(info)
         .then(() => {
+          window.location.replace("http://stackoverflow.com");
           props.history.push("/");
           location.reload();
         })
@@ -608,6 +609,8 @@ function RegisterForm(props) {
       );
     }
   };
+
+  console.log(props.location);
   return (
     <div className="formContainerRegister">
       <div className="goBackRegisterForm">

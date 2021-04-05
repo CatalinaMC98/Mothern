@@ -10,45 +10,35 @@ import esLocale from "date-fns/locale/es";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 
 import { useUser, useFirestore } from "reactfire";
 
 function App(props) {
   const { data: user } = useUser();
   const firestore = useFirestore();
-  const [userData, setUserData] = useState(undefined);
-
-  useEffect(() => {
-    firestore
-      .collection("userinfo")
-      .doc(user?.uid)
-      .get()
-      .then((response) => {
-        setUserData(response.data());
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const [userData, setUserData] = useState(null);
 
   const renderRoutes = () => {
     const loggedin = user !== null && user !== undefined;
-    if (userData === undefined) {
-      return <div></div>;
-    }
 
-    if (!loggedin || userData === null) {
-      return (
-        <Switch>
-          <Route exact path="/" render={() => <Inicial />} />
-          <Route path="/login" render={() => <Login />} />
-          <Route path="/register" render={() => <Register />} />
-
-          <Route path="*" exact component={Inicial} />
-        </Switch>
-      );
-    } else {
+    if (loggedin) {
+      if (userData === null) {
+        firestore
+          .collection("userinfo")
+          .doc(user?.uid)
+          .get()
+          .then((response) => {
+            setUserData(response.data());
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        return <div></div>;
+      }
+      console.log("user data");
+      console.log(userData);
       if (
         !userData?.registerForm &&
         props.location.pathname !== "/registerform"
@@ -57,7 +47,8 @@ function App(props) {
       } else if (
         userData?.registerForm &&
         props.location.pathname !== "/" &&
-        props.location.pathname !== "/registerform"
+        props.location.pathname !== "/registerform" &&
+        props.location.pathname !== "/micuerpo"
       ) {
         props.history.push("/");
       }
@@ -71,8 +62,21 @@ function App(props) {
             path="/registerform"
             render={() => <RegisterForm userInfo={userData} />}
           />
-          <Route path="/micuerpo" render={() => <MiCuerpo />} />
+          <Route
+            path="/micuerpo"
+            render={() => <MiCuerpo userInfo={userData} />}
+          />
           <Route path="*" exact component={NotFound} />
+        </Switch>
+      );
+    } else {
+      return (
+        <Switch>
+          <Route exact path="/" render={() => <Inicial />} />
+          <Route path="/login" render={() => <Login />} />
+          <Route path="/register" render={() => <Register />} />
+
+          <Route path="*" exact component={Inicial} />
         </Switch>
       );
     }

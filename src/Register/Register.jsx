@@ -1,13 +1,18 @@
 import { withRouter } from "react-router-dom";
 import "./Register.css";
 import { useRef, useEffect, useState } from "react";
+import { useAuth } from "reactfire";
+
 function Register(props) {
   const containerRef = useRef();
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
-
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCopy, setPasswordCopy] = useState("");
+
+  const auth = useAuth();
+
   const handleResize = () => {
     setContainerSize({
       width: containerRef.current.offsetWidth,
@@ -24,7 +29,12 @@ function Register(props) {
   }, []);
 
   const register = () => {
-    console.log("REGISTER");
+    auth.createUserWithEmailAndPassword(email, password).then(() => {
+      props.history.push('/')
+    }).catch((err) => {
+        console.log(err);
+      }
+    );
   };
 
   return (
