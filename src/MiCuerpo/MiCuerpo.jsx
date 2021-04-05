@@ -4,51 +4,47 @@ import Slider from "react-slick";
 import { useRef, useState, useEffect } from "react";
 import { Runtime, Inspector } from "@observablehq/runtime";
 import notebook from "@nacaceres/animated-line-chart";
+import { useUser, useFirestore} from "reactfire";
+
 
 function MiCuerpo(props) {
+
+  const { data: user } = useUser();
+  const firestore = useFirestore();
+
+
+
   const sliderRef = useRef();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [settingPeso, setSettingPeso] = useState(false);
-  const semanas = [
-    {
-      numero: 1,
-      peso: 120,
-      imc: 1,
-    },
-    {
-      numero: 2,
-      peso: undefined,
-      imc: 50.3,
-    },
-    {
-      numero: 3,
-      peso: 110,
-      imc: 1,
-    },
-    {
-      numero: 4,
-      peso: 140,
-      imc: 1,
-    },
-    {
-      numero: 5,
-      peso: 120,
-      imc: 1,
-    },
-    {
-      numero: 6,
-      peso: 110,
-      imc: 1,
-    },
-    {
-      numero: 7,
-      peso: 120,
-      imc: 1,
-    },
-  ];
 
   const chartPesoRef = useRef();
   const chartIMCRef = useRef();
+  const [semanas, setSemanas] = useState([])
+
+  //Cargar información de las semanas de la base de datos.
+  useEffect(() => {
+    firestore.collection('userinfo').doc(user?.uid).collection('weeks').get().then((response) => {
+    
+      const responseData = response.empty? [] : response.data;
+      const numSemanas = calcSemana();
+      const semanasEnBD = responseData.length
+      const missing = numSemanas - semanasEnBD;
+
+      for(var i = 0; i < missing; i++){
+        responseData.push({
+          numero: i,
+          peso: undefined,
+          imc: undefined,
+        })
+      }
+
+      setSemanas(responseData);
+    }).catch((err) => {
+      console.log(err);
+    });
+  });
+
 
   //Peso Chart
   useEffect(() => {
@@ -70,7 +66,7 @@ function MiCuerpo(props) {
     return () => {
       runtime.dispose();
     };
-  }, []);
+  }, [semanas]);
 
   //IMC Chart
   useEffect(() => {
@@ -90,7 +86,7 @@ function MiCuerpo(props) {
     return () => {
       runtime.dispose();
     };
-  }, []);
+  }, [semanas]);
 
   var settings = {
     dots: false,
@@ -112,6 +108,14 @@ function MiCuerpo(props) {
       <div style={{ width: "100vw", height: "100vw" }} ref={chartIMCRef}></div>
     );
   };
+
+  const calcSemana = () => {
+    var today = new Date();
+    var lastMenstruation = props.userInfo?.mDate.toDate();
+
+    return Math.round((today - lastMenstruation) / (7 * 24 * 60 * 60 * 1000));
+  }
+
 
   return (
     <div
@@ -322,9 +326,14 @@ function MiCuerpo(props) {
                   Peso (kg)
                 </div>
                 <div className="pesoMiCuerpoCardIngrey">
-                  {semanas[currentSlide].peso === undefined
-                    ? "--"
-                    : semanas[currentSlide].peso}
+                  
+                  {semanas.length !== 0 && 
+                    <div>
+                      {semanas[currentSlide].peso === undefined
+                      ? "--"
+                      : semanas[currentSlide].peso}
+                    </div>
+                  }
                 </div>
               </div>
               <div
@@ -357,9 +366,13 @@ function MiCuerpo(props) {
                   IMC (%)
                 </div>
                 <div className="pesoMiCuerpoCardIngrey">
-                  {semanas[currentSlide].imc === undefined
-                    ? "--"
-                    : semanas[currentSlide].imc}
+                  {semanas.length !== 0 && 
+                    <div>
+                      {semanas[currentSlide].imc === undefined
+                      ? "--"
+                      : semanas[currentSlide].imc}
+                    </div>
+                  }
                 </div>
               </div>
             </div>
@@ -376,7 +389,11 @@ function MiCuerpo(props) {
                 justifyContent: "center",
               }}
             >
-              Completa tu seguimiento de esta semana.
+              {semanas.length !== 0 && semanas[currentSlide].peso === undefined &&
+              <div>
+                Completa tu seguimiento de esta semana.
+              </div>
+              }
             </div>
           </div>
         </div>

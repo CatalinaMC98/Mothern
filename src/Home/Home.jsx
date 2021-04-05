@@ -1,15 +1,11 @@
 import { withRouter } from "react-router-dom";
 import "./Home.css";
 import React, { useRef, useEffect, useState } from "react";
-import { useUser, useAuth, useFirestore} from 'reactfire';
+import {useAuth} from 'reactfire';
 
 
 
 function Home(props) {
-
-
-  const { data: user } = useUser();
-  const firestore = useFirestore();
  
   const info = props.userInfo;
 
@@ -58,7 +54,7 @@ function Home(props) {
 
   const calcSemana = () => {
     var today = new Date();
-    var lastMenstruation = info?.mDate.toDate();
+    var lastMenstruation = props.info?.mDate.toDate();
 
     return Math.round((today - lastMenstruation) / (7 * 24 * 60 * 60 * 1000));
   }

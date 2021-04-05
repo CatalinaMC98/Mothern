@@ -40,7 +40,9 @@ function App(props) {
       if(!userData?.registerForm && props.location.pathname !== '/registerform'){
         props.history.push("/registerform");
       }
-      else if(userData?.registerForm && props.location.pathname !== '/' && props.location.pathname !== '/registerform'){
+      else if(userData?.registerForm && props.location.pathname !== '/' 
+      && props.location.pathname !== '/registerform'
+      && props.location.pathname !== '/micuerpo'){
         props.history.push("/");
       }
 
@@ -50,7 +52,7 @@ function App(props) {
             <Route path="/login" render={() => <Home userInfo={userData}/>} />
             <Route path="/register" render={() => <Home userInfo={userData}/>} />
             <Route path="/registerform" render={() => <RegisterForm userInfo={userData}/>} />
-            <Route path="/micuerpo" render={() => <MiCuerpo />} />
+            <Route path="/micuerpo" render={() => <MiCuerpo userInfo={userData}/>} />
             <Route path="*" exact component={NotFound} />
           </Switch>
       );
