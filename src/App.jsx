@@ -10,35 +10,45 @@ import esLocale from "date-fns/locale/es";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useUser, useFirestore } from "reactfire";
 
 function App(props) {
   const { data: user } = useUser();
   const firestore = useFirestore();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(undefined);
+
+  useEffect(() => {
+    firestore
+      .collection("userinfo")
+      .doc(user?.uid)
+      .get()
+      .then((response) => {
+        setUserData(response.data());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const renderRoutes = () => {
     const loggedin = user !== null && user !== undefined;
+    if (userData === undefined) {
+      return <div></div>;
+    }
 
-    if (loggedin) {
-      if (userData === null) {
-        firestore
-          .collection("userinfo")
-          .doc(user?.uid)
-          .get()
-          .then((response) => {
-            setUserData(response.data());
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        return <div></div>;
-      }
-      console.log("user data");
-      console.log(userData);
+    if (!loggedin || userData === null) {
+      return (
+        <Switch>
+          <Route exact path="/" render={() => <Inicial />} />
+          <Route path="/login" render={() => <Login />} />
+          <Route path="/register" render={() => <Register />} />
+
+          <Route path="*" exact component={Inicial} />
+        </Switch>
+      );
+    } else {
       if (
         !userData?.registerForm &&
         props.location.pathname !== "/registerform"
@@ -63,16 +73,6 @@ function App(props) {
           />
           <Route path="/micuerpo" render={() => <MiCuerpo />} />
           <Route path="*" exact component={NotFound} />
-        </Switch>
-      );
-    } else {
-      return (
-        <Switch>
-          <Route exact path="/" render={() => <Inicial />} />
-          <Route path="/login" render={() => <Login />} />
-          <Route path="/register" render={() => <Register />} />
-
-          <Route path="*" exact component={Inicial} />
         </Switch>
       );
     }

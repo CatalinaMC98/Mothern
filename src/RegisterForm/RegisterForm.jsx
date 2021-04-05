@@ -10,8 +10,7 @@ import Switch from "@material-ui/core/Switch";
 import { withStyles } from "@material-ui/core/styles";
 import { lightBlue } from "@material-ui/core/colors";
 import Create from "./create/Create";
-import { useUser, useFirestore} from "reactfire";
-
+import { useUser, useFirestore } from "reactfire";
 
 const PurpleSwitch = withStyles({
   switchBase: {
@@ -28,15 +27,12 @@ const PurpleSwitch = withStyles({
 })(Switch);
 
 function RegisterForm(props) {
-
-
   const { data: user } = useUser();
-  const personalInfoRef= useFirestore().collection('userinfo').doc(user.uid);
+  const personalInfoRef = useFirestore().collection("userinfo").doc(user.uid);
 
   const [step, setStep] = useState(1);
   const [info, setInfo] = useState({
-
-    name: props.userInfo.name || user.displayName || '',
+    name: props.userInfo.name || user.displayName || "",
     mDate: props.userInfo.mDate.toDate() || new Date(),
     birth: props.userInfo.birth.toDate() || new Date(),
     height: props.userInfo.height || 0,
@@ -60,23 +56,26 @@ function RegisterForm(props) {
     titulo: props.userInfo.titulo || "",
     estrato: props.userInfo.estrato || 1,
     regimen: props.userInfo.regimen || "",
-    registerForm: true
+    registerForm: true,
   });
 
   const handleNext = () => {
-    console.log('on handle next');
+    console.log("on handle next");
     if (step === 1) {
       setStep(2);
     } else if (step === 2) {
       setStep(3);
     } else {
       //Mandar información a Firebase
-      personalInfoRef.set(info).then(() => {
-        props.history.push('/');
-        location.reload();
-      }).catch((err) => {
-        console.log(err);
-      })
+      personalInfoRef
+        .set(info)
+        .then(() => {
+          props.history.push("/");
+          location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -108,7 +107,7 @@ function RegisterForm(props) {
   const handleChangeCheck = (event) => {
     setInfo({ ...info, [event.target.name]: event.target.checked });
   };
-  
+
   const calcForm = () => {
     if (step === 1) {
       return (
