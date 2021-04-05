@@ -1,75 +1,73 @@
-import { withRouter } from 'react-router-dom';
-import './MiCuerpo.css';
-import Slider from 'react-slick';
-import TextField from '@material-ui/core/TextField';
-import { useRef, useState, useEffect } from 'react';
-import { Runtime, Inspector } from '@observablehq/runtime';
-import notebook from '@nacaceres/animated-line-chart';
-import { useUser, useFirestore } from 'reactfire';
+import { withRouter } from "react-router-dom";
+import "./Nutricion.css";
+import Slider from "react-slick";
+import TextField from "@material-ui/core/TextField";
+import { useRef, useState, useEffect } from "react";
+import { Runtime, Inspector } from "@observablehq/runtime";
+import notebook from "@nacaceres/animated-line-chart";
 
-function MiCuerpo(props) {
-  const { data: user } = useUser();
-  const firestore = useFirestore();
-
+function Nutricion(props) {
   const sliderRef = useRef();
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(6);
   const [settingPeso, setSettingPeso] = useState(false);
   const [tempPeso, setTempPeso] = useState(0);
+  const [semanas, setSemanas] = useState([
+    {
+      numero: 1,
+      peso: 120,
+      imc: 1,
+    },
+    {
+      numero: 2,
+      peso: undefined,
+      imc: 50.3,
+    },
+    {
+      numero: 3,
+      peso: 110,
+      imc: 1,
+    },
+    {
+      numero: 4,
+      peso: 140,
+      imc: 1,
+    },
+    {
+      numero: 5,
+      peso: 120,
+      imc: 1,
+    },
+    {
+      numero: 6,
+      peso: 110,
+      imc: 1,
+    },
+    {
+      numero: 7,
+      peso: 120,
+      imc: 1,
+    },
+  ]);
+
   const chartPesoRef = useRef();
   const chartIMCRef = useRef();
-  const [semanas, setSemanas] = useState([]);
-
-  //Cargar información de las semanas de la base de datos.
-  useEffect(() => {
-    firestore
-      .collection('userinfo')
-      .doc(user?.uid)
-      .collection('weeks')
-      .get()
-      .then((response) => {
-        const responseData = [];
-        if (!response.empty) {
-          response.forEach((doc) => {
-            responseData.push(doc.data());
-          });
-        }
-
-        const numSemanas = calcSemana();
-        const semanasEnBD = responseData.length;
-        //+2 porque se incluye la semana actual
-
-        for (var i = semanasEnBD + 1; i < numSemanas + 2; i++) {
-          responseData.push({
-            numero: i,
-            peso: undefined,
-            imc: undefined,
-          });
-        }
-        console.log(responseData);
-        setSemanas(responseData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   //Peso Chart
   useEffect(() => {
     const runtime = new Runtime();
     //Peso Chart
     const mainPeso = runtime.module(notebook, (name) => {
-      if (name === 'chart') return new Inspector(chartPesoRef.current);
+      if (name === "chart") return new Inspector(chartPesoRef.current);
     });
     const pesoData = [];
-    semanas?.map((semana) => {
+    semanas.map((semana) => {
       if (semana.numero !== undefined && semana.peso !== undefined) {
         pesoData.push({ date: semana.numero, value: semana.peso });
       }
     });
-    console.log(pesoData);
-    mainPeso.redefine('data', pesoData);
-    mainPeso.redefine('height', chartPesoRef.current.offsetHeight);
-    mainPeso.redefine('axes', ['Semana', 'Peso (kg)']);
+    mainPeso.redefine("data", pesoData);
+    mainPeso.redefine("height", chartPesoRef.current.offsetHeight);
+    mainPeso.redefine("axes", ["Semana", "Peso-Kg"]);
     return () => {
       runtime.dispose();
     };
@@ -79,19 +77,17 @@ function MiCuerpo(props) {
   useEffect(() => {
     const runtime = new Runtime();
     const mainImc = runtime.module(notebook, (name) => {
-      if (name === 'chart') return new Inspector(chartIMCRef.current);
+      if (name === "chart") return new Inspector(chartIMCRef.current);
     });
     const imcData = [];
-    console.log(semanas);
-    semanas?.map((semana) => {
+    semanas.map((semana) => {
       if (semana.numero !== undefined && semana.imc !== undefined) {
         imcData.push({ date: semana.numero, value: semana.imc });
       }
     });
-    console.log(imcData);
-    mainImc.redefine('data', imcData);
-    mainImc.redefine('height', chartIMCRef.current.offsetHeight);
-    mainImc.redefine('axes', ['Semana', 'IMC']);
+    mainImc.redefine("data", imcData);
+    mainImc.redefine("height", chartIMCRef.current.offsetHeight);
+    mainImc.redefine("axes", ["Semana", "IMC"]);
     return () => {
       runtime.dispose();
     };
@@ -105,52 +101,34 @@ function MiCuerpo(props) {
     arrows: false,
     swipeToSlide: true,
     beforeChange: (current, next) => setCurrentSlide(next),
-    initialSlide: semanas.length,
+    initialSlide: semanas.length - 1,
   };
   const handlePesoChange = () => {
     let semanasTemp = [...semanas];
-    semanasTemp[currentSlide].peso = parseInt(tempPeso);
-    semanasTemp[currentSlide].imc = Math.round(
-      tempPeso / (props.userInfo.height / 100)
-    );
-    console.log(semanasTemp);
+    semanasTemp[currentSlide].peso = tempPeso;
+    semanasTemp[currentSlide].imc = 0;
+    //TODO calcular imc y guardar en firebase
     setSemanas(semanasTemp);
-    firestore
-      .collection('userinfo')
-      .doc(user?.uid)
-      .collection('weeks')
-      .doc((currentSlide + 1).toString())
-      .set(semanasTemp[currentSlide])
-      .catch((err) => {
-        console.log(err);
-      });
     setSettingPeso(false);
   };
 
   const calcPesoGraph = () => {
     return (
-      <div style={{ width: '100vw', height: '100vw' }} ref={chartPesoRef}></div>
+      <div style={{ width: "100vw", height: "100vw" }} ref={chartPesoRef}></div>
     );
   };
   const calcIMCGraph = () => {
     return (
-      <div style={{ width: '100vw', height: '100vw' }} ref={chartIMCRef}></div>
+      <div style={{ width: "100vw", height: "100vw" }} ref={chartIMCRef}></div>
     );
-  };
-
-  const calcSemana = () => {
-    var today = new Date();
-    var lastMenstruation = props.userInfo?.mDate.toDate();
-
-    return Math.round((today - lastMenstruation) / (7 * 24 * 60 * 60 * 1000));
   };
 
   return (
     <div
       className="micuerpoContainer"
       style={{
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       {settingPeso && (
@@ -164,10 +142,10 @@ function MiCuerpo(props) {
           <div
             className="dropUpCard"
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <div
@@ -180,10 +158,10 @@ function MiCuerpo(props) {
             </div>
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <div
@@ -191,19 +169,19 @@ function MiCuerpo(props) {
                   width: 171,
                   height: 64,
                   borderRadius: 16,
-                  backgroundColor: '#EDF9FF',
+                  backgroundColor: "#EDF9FF",
                 }}
               >
                 <TextField
                   style={{
-                    border: 'none',
+                    border: "none",
                     width: 160,
                     marginLeft: 5,
                   }}
                   label="Peso"
                   type="number"
                   defaultValue={
-                    semanas[currentSlide]?.peso === undefined
+                    semanas[currentSlide].peso === undefined
                       ? 0
                       : semanas[currentSlide].peso
                   }
@@ -218,11 +196,11 @@ function MiCuerpo(props) {
                   width: 64,
                   height: 64,
                   borderRadius: 16,
-                  backgroundColor: '#EDF9FF',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  backgroundColor: "#EDF9FF",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginLeft: 11,
                 }}
                 onClick={handlePesoChange}
@@ -236,14 +214,14 @@ function MiCuerpo(props) {
       <div
         className="micuerpoHeader"
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         {/* AA */}
-        <div style={{ position: 'relative', top: -30, left: -78 }}>
+        <div style={{ position: "relative", top: -30, left: -78 }}>
           <div id="Group_11">
             <div id="Group_9">
               <div id="Group_1">
@@ -310,13 +288,13 @@ function MiCuerpo(props) {
       </div>
       <img
         style={{
-          position: 'absolute',
+          position: "absolute",
           left: 30,
           top: 25,
         }}
         src="Path_1046.png"
         onClick={() => {
-          props.history.push('/');
+          props.history.push("/");
         }}
       ></img>
       <div className="micuerpoCard">
@@ -338,35 +316,35 @@ function MiCuerpo(props) {
         <div
           style={{
             height: 60,
-            borderRadius: '0 0 13px 13px',
-            backgroundColor: '#EDF9FF',
-            position: 'relative',
+            borderRadius: "0 0 13px 13px",
+            backgroundColor: "#EDF9FF",
+            position: "relative",
           }}
         >
           <div
             style={{
               height: 60,
-              width: '100%',
-              position: 'absolute',
+              width: "100%",
+              position: "absolute",
             }}
           >
             <div
               style={{
                 height: 60,
-                width: '100%',
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: "100%",
+                position: "relative",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <div
                 style={{
                   height: 60,
-                  borderRadius: '0 0 13px 13px',
-                  backgroundColor: '#ACE4FE',
-                  position: 'absolute',
+                  borderRadius: "0 0 13px 13px",
+                  backgroundColor: "#ACE4FE",
+                  position: "absolute",
                   width: 92,
                 }}
               />
@@ -374,7 +352,7 @@ function MiCuerpo(props) {
                 style={{
                   marginBottom: 40,
                   fontSize: 10,
-                  position: 'absolute',
+                  position: "absolute",
                 }}
               >
                 semana
@@ -383,21 +361,21 @@ function MiCuerpo(props) {
           </div>
           <div
             style={{
-              display: 'block',
+              display: "block",
               height: 60,
               width: 280,
-              marginLeft: 'auto',
-              marginRight: 'auto',
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
           >
             <Slider {...settings} ref={sliderRef} className="slick-slidertest">
               <div></div>
-              {semanas?.map((semana, index) => {
+              {semanas.map((semana, index) => {
                 return (
                   <div
                     key={index}
                     style={{
-                      outline: 'none',
+                      outline: "none",
                     }}
                     onClick={() => {
                       sliderRef.current.slickGoTo(index);
@@ -406,14 +384,14 @@ function MiCuerpo(props) {
                     <div
                       className="semanaSliderItem"
                       style={{
-                        outline: 'none',
+                        outline: "none",
                         width: 92,
                         height: 66,
                         zIndex: 5,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
                       {index + 1}
@@ -429,11 +407,11 @@ function MiCuerpo(props) {
           style={{
             height: 268,
             marginBottom: 40,
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <div className="greyCard">
@@ -441,11 +419,11 @@ function MiCuerpo(props) {
               style={{
                 marginTop: 15,
                 height: 128,
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <div
@@ -453,20 +431,20 @@ function MiCuerpo(props) {
                   height: 128,
                   width: 96,
                   borderRadius: 16,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: 'white',
-                  position: 'relative',
-                  cursor: 'pointer',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "white",
+                  position: "relative",
+                  cursor: "pointer",
                   marginRight: 5,
                 }}
                 className="weightCardMiCuerpo"
                 onClick={() => {
                   setSettingPeso(true);
                   setTempPeso(
-                    semanas[currentSlide]?.peso === undefined
+                    semanas[currentSlide].peso === undefined
                       ? 0
                       : semanas[currentSlide].peso
                   );
@@ -476,24 +454,16 @@ function MiCuerpo(props) {
                   style={{
                     left: 15,
                     bottom: 20,
-                    position: 'absolute',
+                    position: "absolute",
                     fontSize: 12,
                   }}
                 >
                   Peso (kg)
                 </div>
                 <div className="pesoMiCuerpoCardIngrey">
-                  {semanas.length !== 0 && (
-                    <div>
-                      {semanas.length !== 0 && (
-                        <div>
-                          {semanas[currentSlide]?.peso === undefined
-                            ? '--'
-                            : semanas[currentSlide].peso}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                  {semanas[currentSlide].peso === undefined
+                    ? "--"
+                    : semanas[currentSlide].peso}
                 </div>
               </div>
               <div
@@ -501,13 +471,13 @@ function MiCuerpo(props) {
                   height: 128,
                   width: 96,
                   borderRadius: 16,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  position: 'relative',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  backgroundColor: 'white',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  position: "relative",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  backgroundColor: "white",
                   marginLeft: 5,
                 }}
                 onClick={() => {
@@ -519,37 +489,33 @@ function MiCuerpo(props) {
                   style={{
                     left: 15,
                     bottom: 20,
-                    position: 'absolute',
+                    position: "absolute",
                     fontSize: 12,
                   }}
                 >
                   IMC (%)
                 </div>
                 <div className="pesoMiCuerpoCardIngrey">
-                  <div>
-                    {semanas[currentSlide]?.imc === undefined
-                      ? '--'
-                      : semanas[currentSlide].imc}
-                  </div>
+                  {semanas[currentSlide].imc === undefined
+                    ? "--"
+                    : semanas[currentSlide].imc}
                 </div>
               </div>
             </div>
             <div
               style={{
                 height: 41,
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
                 fontSize: 10,
-                fontWeight: 'lighter',
-                fontStyle: 'italic',
-                justifyContent: 'center',
+                fontWeight: "lighter",
+                fontStyle: "italic",
+                justifyContent: "center",
               }}
             >
-              {semanas[currentSlide]?.peso === undefined && (
-                <div>Completa tu seguimiento de esta semana.</div>
-              )}
+              Completa tu seguimiento de esta semana.
             </div>
           </div>
         </div>
@@ -564,13 +530,13 @@ function MiCuerpo(props) {
         <div
           style={{
             height: 54,
-            borderRadius: '0 0 13px 13px',
-            backgroundColor: '#EDF9FF',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 'bolder',
+            borderRadius: "0 0 13px 13px",
+            backgroundColor: "#EDF9FF",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bolder",
           }}
         >
           PESO
@@ -580,13 +546,13 @@ function MiCuerpo(props) {
           style={{
             height: 54,
             marginTop: 50,
-            borderRadius: '0 0 13px 13px',
-            backgroundColor: '#EDF9FF',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 'bolder',
+            borderRadius: "0 0 13px 13px",
+            backgroundColor: "#EDF9FF",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bolder",
           }}
         >
           IMC
@@ -597,4 +563,4 @@ function MiCuerpo(props) {
   );
 }
 
-export default withRouter(MiCuerpo);
+export default withRouter(Nutricion);
