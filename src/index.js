@@ -5,7 +5,8 @@ import { createBrowserHistory } from "history";
 import "./index.css";
 import App from "./App";
 import { FirebaseAppProvider} from 'reactfire';
-
+import 'firebase/auth';
+import 'firebase/firestore';
 const firebaseConfig = {
   apiKey: "AIzaSyAoxPLe-nP6Q3JoswTT-_Cc8IpoLew_10U",
   authDomain: "mothern-eac5a.firebaseapp.com",
@@ -16,6 +17,7 @@ const firebaseConfig = {
 };
 
 const history = createBrowserHistory();
+
 
 ReactDOM.render(
   <Router history={history}>
