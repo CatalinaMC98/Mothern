@@ -1,12 +1,12 @@
 import { withRouter } from "react-router-dom";
-import "./MiCuerpo.css";
+import "./Nutricion.css";
 import Slider from "react-slick";
 import TextField from "@material-ui/core/TextField";
 import { useRef, useState, useEffect } from "react";
 import { Runtime, Inspector } from "@observablehq/runtime";
 import notebook from "@nacaceres/animated-line-chart";
 
-function MiCuerpo(props) {
+function Nutricion(props) {
   const sliderRef = useRef();
   const [currentSlide, setCurrentSlide] = useState(6);
   const [settingPeso, setSettingPeso] = useState(false);
@@ -563,4 +563,4 @@ function MiCuerpo(props) {
   );
 }
 
-export default withRouter(MiCuerpo);
+export default withRouter(Nutricion);
