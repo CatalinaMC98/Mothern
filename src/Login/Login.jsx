@@ -2,8 +2,8 @@ import { withRouter } from "react-router-dom";
 import "./Login.css";
 import { useRef, useEffect, useState } from "react";
 import { useAuth } from "reactfire";
-import 'firebase/auth';
-import firebase from 'firebase/app';
+import "firebase/auth";
+import firebase from "firebase/app";
 
 function Login(props) {
   const containerRef = useRef();
@@ -28,11 +28,14 @@ function Login(props) {
   }, []);
 
   const login = () => {
-    auth.signInWithEmailAndPassword(email, password).then(() => {  
-      props.history.push("/");
-    }).catch((err) =>{ 
-      console.log(err)
-    });
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        props.history.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const loginWithGoogle = () => {
@@ -233,6 +236,7 @@ function Login(props) {
           left: (containerSize.width - 35) / 2,
           top: containerSize.height * 0.901,
         }}
+        onClick={loginWithGoogle}
       />
 
       <div
@@ -241,8 +245,9 @@ function Login(props) {
           left: (containerSize.width - 197) / 2,
           top: containerSize.height * 0.85,
         }}
+        onClick={loginWithGoogle}
       >
-        <span onClick={loginWithGoogle}>Iniciar sesión con Google</span>
+        <span>Iniciar sesión con Google</span>
       </div>
     </div>
   );

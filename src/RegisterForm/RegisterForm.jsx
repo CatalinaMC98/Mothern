@@ -32,33 +32,32 @@ function RegisterForm(props) {
 
   const [step, setStep] = useState(1);
   const [info, setInfo] = useState({
-    name: props.userInfo.name || user.displayName || "",
-    mDate: props.userInfo.mDate.toDate() || new Date(),
-    birth: props.userInfo.birth.toDate() || new Date(),
-    height: props.userInfo.height || 0,
-    bloodLetterType: props.userInfo.bloodLetterType || "",
-    bloodSignType: props.userInfo.bloodSignType || "",
-    weightBefore: props.userInfo.weightBefore || 0,
-    currentWeight: props.userInfo.currentWeight || 0,
-    tuber: props.userInfo.tuber || false,
-    diab: props.userInfo.diab || false,
-    hiper: props.userInfo.hiper || false,
-    pre: props.userInfo.pre || false,
-    ciru: props.userInfo.ciru || false,
-    infer: props.userInfo.infer || false,
-    cardio: props.userInfo.cardio || false,
-    prefAlim: props.userInfo.prefAlim || "",
-    alcohol: props.userInfo.alcohol || "",
-    drogas: props.userInfo.drogas || "",
-    cigarrillo: props.userInfo.cigarrillo || "",
-    empleo: props.userInfo.empleo || "",
-    estadoCiv: props.userInfo.estadoCiv || "",
-    titulo: props.userInfo.titulo || "",
-    estrato: props.userInfo.estrato || 1,
-    regimen: props.userInfo.regimen || "",
+    name: props.userInfo?.name || user.displayName || "",
+    mDate: props.userInfo?.mDate.toDate() || new Date(),
+    birth: props.userInfo?.birth.toDate() || new Date(),
+    height: props.userInfo?.height || 0,
+    bloodLetterType: props.userInfo?.bloodLetterType || "",
+    bloodSignType: props.userInfo?.bloodSignType || "",
+    weightBefore: props.userInfo?.weightBefore || 0,
+    currentWeight: props.userInfo?.currentWeight || 0,
+    tuber: props.userInfo?.tuber || false,
+    diab: props.userInfo?.diab || false,
+    hiper: props.userInfo?.hiper || false,
+    pre: props.userInfo?.pre || false,
+    ciru: props.userInfo?.ciru || false,
+    infer: props.userInfo?.infer || false,
+    cardio: props.userInfo?.cardio || false,
+    prefAlim: props.userInfo?.prefAlim || "",
+    alcohol: props.userInfo?.alcohol || "",
+    drogas: props.userInfo?.drogas || "",
+    cigarrillo: props.userInfo?.cigarrillo || "",
+    empleo: props.userInfo?.empleo || "",
+    estadoCiv: props.userInfo?.estadoCiv || "",
+    titulo: props.userInfo?.titulo || "",
+    estrato: props.userInfo?.estrato || 1,
+    regimen: props.userInfo?.regimen || "",
     registerForm: true,
   });
-
   const handleNext = () => {
     console.log("on handle next");
     if (step === 1) {
@@ -70,9 +69,10 @@ function RegisterForm(props) {
       personalInfoRef
         .set(info)
         .then(() => {
-          window.location.replace("http://stackoverflow.com");
-          props.history.push("/");
-          location.reload();
+          window.location.href = window.location.href.replace(
+            props.location.pathname,
+            "/"
+          );
         })
         .catch((err) => {
           console.log(err);
@@ -609,8 +609,6 @@ function RegisterForm(props) {
       );
     }
   };
-
-  console.log(props.location);
   return (
     <div className="formContainerRegister">
       <div className="goBackRegisterForm">

@@ -2,11 +2,12 @@ import { withRouter } from "react-router-dom";
 import "./Register.css";
 import { useRef, useEffect, useState } from "react";
 import { useAuth } from "reactfire";
+import "firebase/auth";
+import firebase from "firebase/app";
 
 function Register(props) {
   const containerRef = useRef();
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
-  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCopy, setPasswordCopy] = useState("");
@@ -29,12 +30,18 @@ function Register(props) {
   }, []);
 
   const register = () => {
-    auth.createUserWithEmailAndPassword(email, password).then(() => {
-      props.history.push('/')
-    }).catch((err) => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        props.history.push("/");
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    );
+      });
+  };
+  const registerWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithRedirect(provider);
   };
 
   return (
@@ -300,6 +307,7 @@ function Register(props) {
           left: (containerSize.width - 35) / 2,
           top: containerSize.height * 0.8905,
         }}
+        onClick={registerWithGoogle}
       />
 
       <div
@@ -308,6 +316,7 @@ function Register(props) {
           left: (containerSize.width - 165) / 2,
           top: containerSize.height * 0.847,
         }}
+        onClick={registerWithGoogle}
       >
         <span>Conectar con Google</span>
       </div>

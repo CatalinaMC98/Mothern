@@ -22,7 +22,6 @@ function App(props) {
 
   const renderRoutes = () => {
     const loggedin = user !== null && user !== undefined;
-
     if (loggedin) {
       if (userData === null) {
         firestore
@@ -75,7 +74,6 @@ function App(props) {
           <Route exact path="/" render={() => <Inicial />} />
           <Route path="/login" render={() => <Login />} />
           <Route path="/register" render={() => <Register />} />
-
           <Route path="*" exact component={Inicial} />
         </Switch>
       );
