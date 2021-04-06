@@ -5,6 +5,7 @@
   overflow: hidden;
   background-color: #cfc0fc;
   scrollbar-width: thin;
+  scrollbar-color: grey transparent;
 }
 
 .micuerpoCard {
@@ -13,25 +14,21 @@
   display: "flex";
   flex-direction: "colum";
   background-color: white;
-  overflow: hidden;
-  overflow-y: scroll;
   padding-top: 20px;
   width: 100vw;
   border-radius: 42px 42px 0 0;
-  height: calc(100vh - 77px);
-  scrollbar-width: thin;
-  scrollbar-color: grey transparent;
+  min-height: calc(100vh - 77px);
 }
 
-.micuerpoCard::-webkit-scrollbar {
+.micuerpoContainer::-webkit-scrollbar {
   width: 7px;
 }
 
-.micuerpoCard::-webkit-scrollbar-track-piece {
+.micuerpoContainer::-webkit-scrollbar-track-piece {
   background-color: transparent;
 }
 
-.micuerpoCard::-webkit-scrollbar-thumb:vertical {
+.micuerpoContainer::-webkit-scrollbar-thumb:vertical {
   background-color: grey;
   border-radius: 10px;
 }

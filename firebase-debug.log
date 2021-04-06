@@ -82,3 +82,45 @@
     at async C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:161:17
 [error] 
 [error] Error: Failed to get Firebase project mothern-eac5a. Please make sure the project exists and your account has permission to access it.
+[debug] [2021-04-06T13:38:14.615Z] ----------------------------------------------------------------------
+[debug] [2021-04-06T13:38:14.617Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2021-04-06T13:38:14.617Z] CLI Version:   9.8.0
+[debug] [2021-04-06T13:38:14.617Z] Platform:      win32
+[debug] [2021-04-06T13:38:14.617Z] Node Version:  v14.15.4
+[debug] [2021-04-06T13:38:14.618Z] Time:          Tue Apr 06 2021 08:38:14 GMT-0500 (Colombia Standard Time)
+[debug] [2021-04-06T13:38:14.619Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-04-06T13:38:14.628Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-04-06T13:38:14.628Z] > authorizing via signed-in user
+[debug] [2021-04-06T13:38:14.628Z] [iam] checking project mothern-eac5a for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2021-04-06T13:38:14.631Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-04-06T13:38:14.631Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-04-06T13:38:15.345Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","date":"Tue, 06 Apr 2021 13:38:16 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-04-06T13:38:15.351Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/mothern-eac5a:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2021-04-06T13:38:15.886Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 06 Apr 2021 13:38:16 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=431","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-04-06T13:38:15.886Z] [iam] error while checking permissions, command may fail: FirebaseError: Authorization failed. This account is missing the following required permissions on project mothern-eac5a:
+
+  firebase.projects.get
+  firebasehosting.sites.update
+[debug] [2021-04-06T13:38:15.888Z] > refreshing access token with scopes: []
+[debug] [2021-04-06T13:38:15.888Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-04-06T13:38:16.066Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Tue, 06 Apr 2021 13:38:16 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-04-06T13:38:16.077Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/mothern-eac5a [none]
+[debug] [2021-04-06T13:38:16.407Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/mothern-eac5a 403
+[debug] [2021-04-06T13:38:16.407Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/mothern-eac5a {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2021-04-06T13:38:16.407Z] HTTP Error: 403, The caller does not have permission
+[debug] [2021-04-06T13:38:16.409Z] FirebaseError: HTTP Error: 403, The caller does not have permission
+    at module.exports (C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:38:12)
+    at Client.doRequest (C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:238:23)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+    at async Client.request (C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:96:20)
+    at async Object.getFirebaseProject (C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:289:21)
+    at async Object.getDefaultHostingSite (C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\getDefaultHostingSite.js:8:21)
+    at async requireHostingSite (C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\requireHostingSite.js:9:18)
+    at async Object.fn (C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\deploy.js:66:9)
+    at async C:\Users\pipev\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:161:17
+[error] 
+[error] Error: Failed to get Firebase project mothern-eac5a. Please make sure the project exists and your account has permission to access it.

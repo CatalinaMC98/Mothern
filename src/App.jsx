@@ -4,6 +4,7 @@ import Login from "./Login/Login";
 import Register from "./Register/Register";
 import RegisterForm from "./RegisterForm/RegisterForm";
 import MiCuerpo from "./MiCuerpo/MiCuerpo";
+import Nutricion from "./Nutricion/Nutricion";
 import { Switch, Route, withRouter } from "react-router-dom";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 import esLocale from "date-fns/locale/es";
@@ -32,24 +33,17 @@ function App(props) {
             setUserData(response.data());
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
           });
         return <div></div>;
       }
-      console.log("user data");
-      console.log(userData);
+      // console.log("user data");
+      // console.log(userData);
       if (
         !userData?.registerForm &&
         props.location.pathname !== "/registerform"
       ) {
         props.history.push("/registerform");
-      } else if (
-        userData?.registerForm &&
-        props.location.pathname !== "/" &&
-        props.location.pathname !== "/registerform" &&
-        props.location.pathname !== "/micuerpo"
-      ) {
-        props.history.push("/");
       }
 
       return (
@@ -65,7 +59,11 @@ function App(props) {
             path="/micuerpo"
             render={() => <MiCuerpo userInfo={userData} />}
           />
-          <Route path="*" exact component={NotFound} />
+          <Route
+            path="/nutricion"
+            render={() => <Nutricion userInfo={userData} />}
+          />
+          <Route path="*" exact render={() => <Home userInfo={userData} />} />
         </Switch>
       );
     } else {

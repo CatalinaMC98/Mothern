@@ -35,8 +35,6 @@ export default function CreatableInputOnly() {
   });
   const handleChange = (value, actionMeta) => {
     console.group("Value Changed");
-    console.log(value);
-    console.log(`action: ${actionMeta.action}`);
     console.groupEnd();
     setState({ ...state, value });
   };
@@ -51,7 +49,6 @@ export default function CreatableInputOnly() {
       case "Enter":
       case "Tab":
         console.group("Value Added");
-        console.log(value);
         console.groupEnd();
         setState({
           inputValue: "",

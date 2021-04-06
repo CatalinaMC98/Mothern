@@ -56,6 +56,10 @@
   font-size: 37px;
   color: rgba(70, 70, 70, 1);
   letter-spacing: 0.3px;
+  display: "flex";
+  flex-direction: "colum";
+  text-align: center;
+  align-items: center;
 }
 #Group_11 {
   position: absolute;

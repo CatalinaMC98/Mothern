@@ -1,7 +1,7 @@
-import { withRouter } from 'react-router-dom';
-import './Home.css';
-import React, { useRef, useEffect, useState } from 'react';
-import { useAuth } from 'reactfire';
+import { withRouter } from "react-router-dom";
+import "./Home.css";
+import React, { useRef, useEffect, useState } from "react";
+import { useAuth } from "reactfire";
 
 function Home(props) {
   const info = props.userInfo;
@@ -10,24 +10,24 @@ function Home(props) {
 
   const notificaciones = [
     {
-      fecha: new Date('2020/08/17'),
-      espacialidad: 'CARDIOO',
-      centroMedico: 'reina sofia',
+      fecha: new Date("2020/08/17"),
+      espacialidad: "CARDIOO",
+      centroMedico: "reina sofia",
     },
     {
-      fecha: new Date('2020/08/17'),
-      espacialidad: 'CARDIOO',
-      centroMedico: 'reina sofia',
+      fecha: new Date("2020/08/17"),
+      espacialidad: "CARDIOO",
+      centroMedico: "reina sofia",
     },
     {
-      fecha: new Date('2020/08/17'),
-      espacialidad: 'CARDIOO',
-      centroMedico: 'reina sofia',
+      fecha: new Date("2020/08/17"),
+      espacialidad: "CARDIOO",
+      centroMedico: "reina sofia",
     },
     {
-      fecha: new Date('2020/08/17'),
-      espacialidad: 'CARDIOO',
-      centroMedico: 'reina sofia',
+      fecha: new Date("2020/08/17"),
+      espacialidad: "CARDIOO",
+      centroMedico: "reina sofia",
     },
   ];
   const containerRef = useRef();
@@ -64,35 +64,34 @@ function Home(props) {
   };
   useEffect(() => {
     // Pone un listener para escuchar los cambio en el tamaño de la pantalla
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize();
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   const logout = () => {
     auth.signOut().then(() => {
-      props.history.push('/');
+      props.history.push("/");
     });
   };
 
   const renderMenu = () => {
-    console.log(info);
-    if (menuOpen === 'MENU') {
+    if (menuOpen === "MENU") {
       return (
         <React.Fragment>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
             <div
               className="lblNombreHome"
-              style={{ width: 'calc(100% - 95px)' }}
+              style={{ width: "calc(100% - 95px)" }}
             >
               {info?.name}
             </div>
             <div
               className="lbleditarHome"
               onClick={() => {
-                props.history.push('/registerform');
+                props.history.push("/registerform");
               }}
             >
               editar
@@ -103,23 +102,23 @@ function Home(props) {
               style={{
                 flex: 1,
                 marginTop: 10,
-                borderRight: '1px solid white',
+                borderRight: "1px solid white",
                 width: 45,
               }}
             ></div>
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: 'calc(100% - 45px)',
+                display: "flex",
+                flexDirection: "column",
+                width: "calc(100% - 45px)",
               }}
             >
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'start',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
                   marginLeft: -5,
                   marginBottom: 15,
                 }}
@@ -130,10 +129,10 @@ function Home(props) {
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'start',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
                   marginLeft: -5,
                   marginBottom: 15,
                 }}
@@ -144,10 +143,10 @@ function Home(props) {
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'start',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
                   marginLeft: -5,
                   marginBottom: 15,
                 }}
@@ -158,10 +157,10 @@ function Home(props) {
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'start',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
                   marginLeft: -5,
                   marginBottom: 15,
                 }}
@@ -169,15 +168,15 @@ function Home(props) {
                 <div className="dotHome"></div>
                 <div className="lblcontentHomeMenu">Grupo sanguíneo</div>
                 <div className="lblcontentHomeMenuInfo">
-                  {info?.bloodLetterType + '' + info?.bloodSignType}
+                  {info?.bloodLetterType + "" + info?.bloodSignType}
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'start',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
                   marginLeft: -5,
                   marginBottom: 15,
                 }}
@@ -212,10 +211,10 @@ function Home(props) {
               )}
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'start',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
                   marginLeft: -5,
                   marginTop: 15,
                   marginBottom: 10,
@@ -234,13 +233,13 @@ function Home(props) {
           </div>
         </React.Fragment>
       );
-    } else if (menuOpen === 'CONFIG') {
+    } else if (menuOpen === "CONFIG") {
       return (
         <React.Fragment>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
             <div
               className="lblNombreHome"
-              style={{ width: 'calc(100% - 95px)' }}
+              style={{ width: "calc(100% - 95px)" }}
             >
               Configuraciones
             </div>
@@ -249,7 +248,7 @@ function Home(props) {
                 width: 30,
                 height: 30,
                 marginTop: 32,
-                marginLeft: 'auto',
+                marginLeft: "auto",
                 marginRight: 23,
               }}
               src="config.png"
@@ -263,17 +262,17 @@ function Home(props) {
             ></div>
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: 'calc(100% - 45px)',
+                display: "flex",
+                flexDirection: "column",
+                width: "calc(100% - 45px)",
               }}
             >
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'start',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
                   marginLeft: -5,
                   marginBottom: 15,
                 }}
@@ -287,13 +286,13 @@ function Home(props) {
           </div>
         </React.Fragment>
       );
-    } else if (menuOpen === 'NOTIF') {
+    } else if (menuOpen === "NOTIF") {
       return (
         <React.Fragment>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
             <div
               className="lblNombreHome"
-              style={{ width: 'calc(100% - 95px)' }}
+              style={{ width: "calc(100% - 95px)" }}
             >
               Notificaciones
             </div>
@@ -302,7 +301,7 @@ function Home(props) {
                 width: 30,
                 height: 30,
                 marginTop: 32,
-                marginLeft: 'auto',
+                marginLeft: "auto",
                 marginRight: 23,
               }}
               src="notif.png"
@@ -310,11 +309,11 @@ function Home(props) {
           </div>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              height: 'calc(100vh - 160px)',
-              overflowY: 'scroll',
-              scrollbarWidth: 'thin',
+              display: "flex",
+              flexDirection: "column",
+              height: "calc(100vh - 160px)",
+              overflowY: "scroll",
+              scrollbarWidth: "thin",
               marginTop: 10,
             }}
           >
@@ -324,17 +323,17 @@ function Home(props) {
                   key={index}
                   className="cardAgenda"
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    border: '1px solid #CFC0FC',
+                    display: "flex",
+                    flexDirection: "column",
+                    border: "1px solid #CFC0FC",
                   }}
                 >
                   <div
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
+                      display: "flex",
+                      flexDirection: "row",
                       fontSize: 13,
-                      fontWeight: 'bold',
+                      fontWeight: "bold",
                     }}
                   >
                     <div style={{ marginTop: 22, marginLeft: 22 }}>
@@ -342,40 +341,40 @@ function Home(props) {
                     </div>
                     <div
                       style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'flex-end',
-                        justifyContent: 'center',
-                        marginLeft: 'auto',
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-end",
+                        justifyContent: "center",
+                        marginLeft: "auto",
                         marginTop: 10,
                         marginRight: 10,
                       }}
                     >
                       <div>
                         {notif.fecha.toLocaleDateString([], {
-                          weekday: 'short',
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric',
+                          weekday: "short",
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
                         })}
                       </div>
-                      <div style={{ fontSize: 18, fontWeight: 'regular' }}>
+                      <div style={{ fontSize: 18, fontWeight: "regular" }}>
                         {notif.fecha.toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
+                          hour: "2-digit",
+                          minute: "2-digit",
                         })}
                       </div>
                     </div>
                   </div>
                   <div
                     style={{
-                      marginTop: 'auto',
+                      marginTop: "auto",
                       marginBottom: 10,
                       marginLeft: 22,
-                      display: 'flex',
-                      flexDirection: 'row',
+                      display: "flex",
+                      flexDirection: "row",
                       fontSize: 14,
-                      fontWeight: 'light',
+                      fontWeight: "light",
                       height: 40,
                       width: 200,
                     }}
@@ -401,8 +400,8 @@ function Home(props) {
               height: 20,
               left: (containerSize.width - 135) / 2,
               top: 17,
-              position: 'absolute',
-              cursor: 'pointer',
+              position: "absolute",
+              cursor: "pointer",
             }}
             src="blueLogo.png"
             onClick={() => {
@@ -415,8 +414,8 @@ function Home(props) {
               height: 13,
               right: 23,
               top: 20,
-              position: 'absolute',
-              cursor: 'pointer',
+              position: "absolute",
+              cursor: "pointer",
             }}
             src="Group_117.png"
             onClick={() => {
@@ -470,7 +469,15 @@ function Home(props) {
         >
           <span>Semanas</span>
         </div>
-        <div id="ID15" style={{ left: containerSize.width - 74 }}>
+        <div
+          id="ID15"
+          style={{
+            left: containerSize.width - 105,
+            top: 70,
+            height: 65,
+            width: 92,
+          }}
+        >
           <span>{calcSemana() + 1}</span>
         </div>
         <div id="Group_11">
@@ -568,9 +575,9 @@ function Home(props) {
         </div>
         <div
           id="Group_116"
-          style={{ left: containerSize.width - 47, cursor: 'pointer' }}
+          style={{ left: containerSize.width - 47, cursor: "pointer" }}
           onClick={() => {
-            setMenuOpen('MENU');
+            setMenuOpen("MENU");
           }}
         >
           <svg className="Rectangle_107">
@@ -648,10 +655,10 @@ function Home(props) {
           style={{
             right: 28,
             top: containerSize.height / 2 - 20,
-            cursor: 'pointer',
+            cursor: "pointer",
           }}
           onClick={() => {
-            setMenuOpen('NOTIF');
+            setMenuOpen("NOTIF");
           }}
         >
           <svg className="Path_17" viewBox="-2721.406 2455.024 24.386 23.807">
@@ -672,10 +679,10 @@ function Home(props) {
           style={{
             right: 28,
             top: containerSize.height / 2 + 60,
-            cursor: 'pointer',
+            cursor: "pointer",
           }}
           onClick={() => {
-            setMenuOpen('CONFIG');
+            setMenuOpen("CONFIG");
           }}
         >
           <svg className="Path_24" viewBox="-1642.761 1247.138 28.486 28.686">
@@ -699,7 +706,7 @@ function Home(props) {
             width: containerSize.width - 114,
           }}
           onClick={() => {
-            props.history.push('/micuerpo');
+            props.history.push("/micuerpo");
           }}
         >
           <rect
@@ -719,6 +726,9 @@ function Home(props) {
               161 + containerSize.height / 4 + containerSize.height * 0.15 + 38,
             width: containerSize.width - 114,
           }}
+          onClick={() => {
+            props.history.push("/agenda");
+          }}
         >
           <rect
             id="Rectangle_60"
@@ -736,6 +746,9 @@ function Home(props) {
             top: 161 + containerSize.height / 4 + 19,
             width: containerSize.width - 114,
           }}
+          onClick={() => {
+            props.history.push("/nutricion");
+          }}
         >
           <rect
             id="Rectangle_61"
@@ -747,13 +760,22 @@ function Home(props) {
             height={containerSize.height * 0.15}
           ></rect>
         </svg>
-        <div id="Mi_cuerpo_" style={{ top: containerSize.height / 4 + 103 }}>
+        <div
+          id="Mi_cuerpo_"
+          style={{ top: containerSize.height / 4 + 103 }}
+          onClick={() => {
+            props.history.push("/micuerpo");
+          }}
+        >
           <span>Mi cuerpo </span>
         </div>
         <div
           id="Agenda_mdica"
           style={{
             top: 150 + containerSize.height / 4 + containerSize.height * 0.37,
+          }}
+          onClick={() => {
+            props.history.push("/agenda");
           }}
         >
           <span>Agenda médica</span>
@@ -763,10 +785,19 @@ function Home(props) {
           style={{
             top: 130 + containerSize.height / 4 + containerSize.height * 0.15,
           }}
+          onClick={() => {
+            props.history.push("/nutricion");
+          }}
         >
           <span>Nutrición</span>
         </div>
-        <div id="Group_104" style={{ top: containerSize.height / 4 + 35 }}>
+        <div
+          id="Group_104"
+          style={{ top: containerSize.height / 4 + 35 }}
+          onClick={() => {
+            props.history.push("/micuerpo");
+          }}
+        >
           <svg className="Path_915" viewBox="341.363 1694.669 35.922 63.934">
             <path
               id="Path_915"
@@ -791,6 +822,9 @@ function Home(props) {
           style={{
             top: containerSize.height / 4 + containerSize.height * 0.15 + 80,
           }}
+          onClick={() => {
+            props.history.push("/nutricion");
+          }}
         >
           <img id="Group_97" src="Group_97.png"></img>
         </div>
@@ -798,6 +832,9 @@ function Home(props) {
           id="Group_106"
           style={{
             top: 105 + containerSize.height / 4 + containerSize.height * 0.35,
+          }}
+          onClick={() => {
+            props.history.push("/agenda");
           }}
         >
           <img id="Group_99" src="Group_99.png"></img>

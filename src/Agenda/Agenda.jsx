@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import { useRef, useState, useEffect } from "react";
 import { useUser, useFirestore } from "reactfire";
 
-function Nutricion(props) {
+function Agenda(props) {
   const { data: user } = useUser();
   const firestore = useFirestore();
   return (
@@ -113,15 +113,12 @@ function Nutricion(props) {
               marginLeft: 40,
               marginTop: 3,
             }}
-            src="NUTRICIN_.png"
+            src="AGENDA.png"
           ></img>
-          <a href="../NUTRICIN_.png" target="_blank">
-            Open page in new window
-          </a>
         </div>
       </div>
     </div>
   );
 }
 
-export default withRouter(Nutricion);
+export default withRouter(Agenda);

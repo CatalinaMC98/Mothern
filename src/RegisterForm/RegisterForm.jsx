@@ -59,7 +59,6 @@ function RegisterForm(props) {
     registerForm: true,
   });
   const handleNext = () => {
-    console.log("on handle next");
     if (step === 1) {
       setStep(2);
     } else if (step === 2) {
@@ -75,7 +74,7 @@ function RegisterForm(props) {
           );
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     }
   };
@@ -128,7 +127,6 @@ function RegisterForm(props) {
             style={{ marginTop: 5 }}
             value={info.mDate}
             onChange={(val) => {
-              console.log(val.toLocaleDateString());
               let inf = info;
               inf.mDate = val;
               setInfo(inf);
@@ -139,7 +137,6 @@ function RegisterForm(props) {
             style={{ marginTop: 5 }}
             value={info.birth}
             onChange={(val) => {
-              console.log(val.toLocaleDateString());
               let inf = info;
               inf.birth = val;
               setInfo(inf);
