@@ -5,6 +5,7 @@ import Register from "./Register/Register";
 import RegisterForm from "./RegisterForm/RegisterForm";
 import MiCuerpo from "./MiCuerpo/MiCuerpo";
 import Nutricion from "./Nutricion/Nutricion";
+import Agenda from "./Agenda/Agenda";
 import { Switch, Route, withRouter } from "react-router-dom";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 import esLocale from "date-fns/locale/es";
@@ -63,6 +64,7 @@ function App(props) {
             path="/nutricion"
             render={() => <Nutricion userInfo={userData} />}
           />
+          <Route path="/agenda" render={() => <Agenda userInfo={userData} />} />
           <Route path="*" exact render={() => <Home userInfo={userData} />} />
         </Switch>
       );
@@ -87,9 +89,4 @@ function App(props) {
     </MuiPickersUtilsProvider>
   );
 }
-
-function NotFound() {
-  return <div>Not Found</div>;
-}
-
 export default withRouter(App);
