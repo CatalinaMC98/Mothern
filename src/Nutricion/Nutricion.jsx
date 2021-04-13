@@ -1,29 +1,110 @@
-import { withRouter } from "react-router-dom";
-import "./Nutricion.css";
-import React, { useState } from "react";
-import { useUser, useFirestore } from "reactfire";
+import { withRouter } from 'react-router-dom';
+import './Nutricion.css';
+import React, { useState, useEffect } from 'react';
+import { useFirestore, useStorage } from 'reactfire';
 function Nutricion(props) {
-  const { data: user } = useUser();
   const [current, setCurrent] = useState(undefined);
   const firestore = useFirestore();
+  const storage = useStorage();
 
-  const imgs = [
-    { thumbnail: "img.jpg", fullscreen: "img.jpg" },
-    { thumbnail: "img.jpg", fullscreen: "img.jpg" },
-    { thumbnail: "img.jpg", fullscreen: "img.jpg" },
-    { thumbnail: "img.jpg", fullscreen: "img.jpg" },
-    { thumbnail: "img.jpg", fullscreen: "img.jpg" },
-    { thumbnail: "img.jpg", fullscreen: "img.jpg" },
-    { thumbnail: "img.jpg", fullscreen: "img.jpg" },
-    { thumbnail: "img.jpg", fullscreen: "img.jpg" },
-  ];
+  // const [imgs, setImages] = useState([
+  //   { thumbnail: 'img.jpg', fullscreen: 'img.jpg' },
+  //   { thumbnail: 'img.jpg', fullscreen: 'img.jpg' },
+  //   { thumbnail: 'img.jpg', fullscreen: 'img.jpg' },
+  //   { thumbnail: 'img.jpg', fullscreen: 'img.jpg' },
+  //   { thumbnail: 'img.jpg', fullscreen: 'img.jpg' },
+  //   { thumbnail: 'img.jpg', fullscreen: 'img.jpg' },
+  //   { thumbnail: 'img.jpg', fullscreen: 'img.jpg' },
+  //   { thumbnail: 'img.jpg', fullscreen: 'img.jpg' },
+  // ]);
+
+  const [imgs, setImages] = useState([]);
+
+  useEffect(() => {
+    firestore
+      .collection('nutricion')
+      .get()
+      .then((response) => {
+        const responseData = [];
+        if (!response.empty) {
+          response.forEach((doc) => {
+            const data = doc.data();
+            responseData.push({
+              thumbnailRef: storage.refFromURL(data.thumbnail),
+              fullscreenRef: storage.refFromURL(data.fullscreen),
+            });
+          });
+          console.log(responseData);
+
+          // const newImages = [];
+          // var fun = responseData[0].thumbnailRef
+          //   .getDownloadURL()
+          //   .then((thumbnailUrl) => {
+          //     responseData[0].fullscreenRef
+          //       .getDownloadURL()
+          //       .then((fullscreenUrl) => {
+          //         newImages.push({
+          //           thumbnail: thumbnailUrl,
+          //           fullscreen: fullscreenUrl,
+          //         });
+          //       });
+          //   });
+          // console.log(responseData.length);
+          // var i = 1;
+          // while (i < responseData.length) {
+          //   console.log('i');
+          //   console.log(i);
+          //   fun = fun.then(() => {
+          //     responseData[i].thumbnailRef
+          //       .getDownloadURL()
+          //       .then((thumbnailUrl) => {
+          //         responseData[i].fullscreenRef
+          //           .getDownloadURL()
+          //           .then((fullscreenUrl) => {
+          //             newImages.push({
+          //               thumbnail: thumbnailUrl,
+          //               fullscreen: fullscreenUrl,
+          //             });
+          //           });
+          //       });
+          //   });
+          //   i++;
+          // }
+
+          // fun.then(() => {
+          //   console.log('NEW IMAGES');
+          //   console.log(newImages);
+          //   setImages(newImages);
+          //   console.log(imgs);
+          // });
+
+          // responseData.forEach((entry) => {
+          //   entry.thumbnailRef.getDownloadURL().then((thumbnailUrl) => {
+          //     entry.fullscreenRef.getDownloadURL().then((fullscreenUrl) => {
+          //       const imgsNew = [...imgs];
+          //       imgsNew.push({
+          //         thumbnail: thumbnailUrl,
+          //         fullscreen: fullscreenUrl,
+          //       });
+          //       console.log('imgs');
+          //       console.log(imgsNew);
+          //       setImages(imgsNew);
+          //     });
+          //   });
+          // });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <React.Fragment>
       {current !== undefined && (
         <div
           style={{
-            position: "absolute",
+            position: 'absolute',
           }}
         >
           <div
@@ -34,34 +115,34 @@ function Nutricion(props) {
           ></div>
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "relative",
-              height: "calc(100vh)",
-              width: "100vw",
-              overflow: "hidden",
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              height: 'calc(100vh)',
+              width: '100vw',
+              overflow: 'hidden',
               zIndex: 10,
             }}
           >
             <img
               className="imageViewer"
-              src="img.jpg"
+              src={current.fullscreen}
               style={{
-                position: "absolute",
+                position: 'absolute',
 
                 zIndex: 14,
               }}
             ></img>
             <div
               style={{
-                position: "absolute",
+                position: 'absolute',
                 top: 10,
                 right: 10,
                 height: 20,
                 width: 20,
-                color: "white",
+                color: 'white',
                 zIndex: 16,
               }}
               onClick={() => {
@@ -77,20 +158,20 @@ function Nutricion(props) {
       <div
         className="micuerpoContainer"
         style={{
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <div
           className="micuerpoHeader"
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          <div style={{ position: "relative", top: -30, left: -78 }}>
+          <div style={{ position: 'relative', top: -30, left: -78 }}>
             <div id="Group_11">
               <div id="Group_9">
                 <div id="Group_1">
@@ -172,13 +253,13 @@ function Nutricion(props) {
         </div>
         <img
           style={{
-            position: "absolute",
+            position: 'absolute',
             left: 30,
             top: 25,
           }}
           src="Path_1046.png"
           onClick={() => {
-            props.history.push("/");
+            props.history.push('/');
           }}
         ></img>
         <div className="micuerpoCard">

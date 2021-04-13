@@ -1,46 +1,101 @@
-import { withRouter } from "react-router-dom";
-import "./Agenda.css";
-import TextField from "@material-ui/core/TextField";
-import React, { useState, useEffect } from "react";
-import { useUser, useFirestore } from "reactfire";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import { DateTimePicker } from "@material-ui/pickers";
+import { withRouter } from 'react-router-dom';
+import './Agenda.css';
+import TextField from '@material-ui/core/TextField';
+import React, { useState, useEffect } from 'react';
+import { useUser, useMessaging, useFirestore } from 'reactfire';
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
+import { DateTimePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 function Agenda(props) {
+  const PUBLIC_VAPID_KEY =
+    'BGUFszf55f2NtTl0KW1eWjmM9gs000O43kRKRMgUwIn_NadJObUeFZ7xHnfNo9AAYXMEdLPOIv96jqFbfG5wtNY';
+
   const { data: user } = useUser();
-  const [current, setCurrent] = useState(undefined);
-  const [centro, setCentro] = useState("");
-  const [especialidad, setEspecialidad] = useState("");
+  const [centro, setCentro] = useState('');
+  const [especialidad, setEspecialidad] = useState('');
   const [fecha, setFecha] = useState(new Date());
 
-  const citas = [
-    {
-      fecha: new Date("2020/08/17"),
-      espacialidad: "CARDIOO",
-      centroMedico: "reina sofia",
-    },
-    {
-      fecha: new Date("2020/08/17"),
-      espacialidad: "CARDIOO",
-      centroMedico: "reina sofia",
-    },
-    {
-      fecha: new Date("2020/08/17"),
-      espacialidad: "CARDIOO",
-      centroMedico: "reina sofia",
-    },
-    {
-      fecha: new Date("2020/08/17"),
-      espacialidad: "CARDIOO",
-      centroMedico: "reina sofia",
-    },
-  ];
+  const firestore = useFirestore();
+
+  const [citas, setCitas] = useState([]);
+
+  useEffect(() => {
+    firestore
+      .collection('userinfo')
+      .doc(user?.uid)
+      .get()
+      .then((response) => {
+        setCitas(response.data().citas || []);
+      });
+  }, [user]);
+
+  const messaging = useMessaging();
 
   const [creating, setCreating] = useState(false);
 
   const handleCreate = () => {
     setCreating(false);
+
+    const newCitas = [...citas];
+
+    newCitas.push({
+      centro: centro,
+      especialidad: especialidad,
+      fecha: fecha,
+    });
+
+    setCitas(newCitas);
+
+    //Persistir nueva cita
+    firestore
+      .collection('userinfo')
+      .doc(user?.uid)
+      .update({ citas: newCitas })
+      .then(() => {
+        console.log('persisted agendas');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // Get registration token. Initially this makes a network call, once retrieved
+    // subsequent calls to getToken will return from cache.
+    messaging
+      .getToken({ vapidKey: PUBLIC_VAPID_KEY })
+      .then((currentToken) => {
+        if (currentToken) {
+          // Send the token to your server and update the UI if necessary
+          // ...
+          console.log('Current Token for FCM');
+          console.log(currentToken);
+          firestore
+            .collection('userinfo')
+            .doc(user?.uid)
+            .collection('pushtokens')
+            .doc(currentToken)
+            .set({
+              active: true,
+            })
+            .then(() => {
+              console.log('persisted token for user');
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          // Show permission request UI
+          console.log(
+            'No registration token available. Request permission to generate one.'
+          );
+          // ...
+        }
+      })
+      .catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+        // ...
+      });
   };
-  const firestore = useFirestore();
+
   return (
     <React.Fragment>
       {creating && (
@@ -55,10 +110,10 @@ function Agenda(props) {
             className="dropUpCard"
             style={{
               minHeight: 400,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <div
@@ -72,21 +127,21 @@ function Agenda(props) {
             <div
               style={{
                 maxWidth: 300,
-                width: "70vw",
+                width: '70vw',
                 height: 64,
                 borderRadius: 16,
                 marginBottom: 20,
-                backgroundColor: "#EDF9FF",
+                backgroundColor: '#EDF9FF',
               }}
             >
               <TextField
                 style={{
-                  border: "none",
-                  width: "calc(100% - 10px)",
+                  border: 'none',
+                  width: 'calc(100% - 10px)',
                   marginLeft: 5,
                 }}
                 label="Especialidad Medica"
-                defaultValue={""}
+                defaultValue={''}
                 name="especialidad"
                 onChange={(e) => {
                   setEspecialidad(e.target.value);
@@ -96,21 +151,21 @@ function Agenda(props) {
             <div
               style={{
                 maxWidth: 300,
-                width: "70vw",
+                width: '70vw',
                 height: 64,
                 borderRadius: 16,
                 marginBottom: 20,
-                backgroundColor: "#EDF9FF",
+                backgroundColor: '#EDF9FF',
               }}
             >
               <TextField
                 style={{
-                  border: "none",
-                  width: "calc(100% - 10px)",
+                  border: 'none',
+                  width: 'calc(100% - 10px)',
                   marginLeft: 5,
                 }}
                 label="Centro médico"
-                defaultValue={""}
+                defaultValue={''}
                 name="centro"
                 onChange={(e) => {
                   setCentro(e.target.value);
@@ -120,18 +175,18 @@ function Agenda(props) {
             <div
               style={{
                 maxWidth: 300,
-                width: "70vw",
+                width: '70vw',
                 height: 64,
                 borderRadius: 16,
                 marginBottom: 20,
-                backgroundColor: "#EDF9FF",
+                backgroundColor: '#EDF9FF',
               }}
             >
               <DateTimePicker
                 style={{
-                  border: "none",
+                  border: 'none',
                   marginTop: 15,
-                  width: "calc(100% - 10px)",
+                  width: 'calc(100% - 10px)',
                   marginLeft: 5,
                 }}
                 value={fecha}
@@ -146,11 +201,11 @@ function Agenda(props) {
                 width: 64,
                 height: 64,
                 borderRadius: 16,
-                backgroundColor: "#EDF9FF",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
+                backgroundColor: '#EDF9FF',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
                 marginLeft: 11,
               }}
               onClick={handleCreate}
@@ -163,20 +218,20 @@ function Agenda(props) {
       <div
         className="micuerpoContainer"
         style={{
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <div
           className="micuerpoHeader"
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          <div style={{ position: "relative", top: -30, left: -78 }}>
+          <div style={{ position: 'relative', top: -30, left: -78 }}>
             <div id="Group_11">
               <div id="Group_9">
                 <div id="Group_1">
@@ -258,13 +313,13 @@ function Agenda(props) {
         </div>
         <img
           style={{
-            position: "absolute",
+            position: 'absolute',
             left: 30,
             top: 25,
           }}
           src="Path_1046.png"
           onClick={() => {
-            props.history.push("/");
+            props.history.push('/');
           }}
         ></img>
         <div className="micuerpoCard">
@@ -304,58 +359,80 @@ function Agenda(props) {
                 key={index}
                 className="cardAgenda shadow2"
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  border: "1px solid #ACE4FE",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  border: '1px solid #ACE4FE',
                 }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    flexDirection: "row",
+                    display: 'flex',
+                    flexDirection: 'row',
                     fontSize: 13,
-                    fontWeight: "bold",
+                    fontWeight: 'bold',
                   }}
                 >
                   <div style={{ marginTop: 22, marginLeft: 22 }}>
-                    {cita.espacialidad}
+                    {cita.especialidad}
                   </div>
                   <div
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-end",
-                      justifyContent: "center",
-                      marginLeft: "auto",
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      marginLeft: 'auto',
                       marginTop: 10,
                       marginRight: 10,
                     }}
                   >
-                    <div>
-                      {cita.fecha.toLocaleDateString([], {
-                        weekday: "short",
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </div>
-                    <div style={{ fontSize: 18, fontWeight: "regular" }}>
-                      {cita.fecha.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </div>
+                    {cita.fecha instanceof Date && (
+                      <div>
+                        {cita.fecha.toLocaleDateString([], {
+                          weekday: 'short',
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
+                      </div>
+                    )}
+                    {!(cita.fecha instanceof Date) && (
+                      <div>
+                        {cita.fecha.toDate().toLocaleDateString([], {
+                          weekday: 'short',
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
+                      </div>
+                    )}
+                    {cita.fecha instanceof Date && (
+                      <div style={{ fontSize: 18, fontWeight: 'regular' }}>
+                        {cita.fecha.toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </div>
+                    )}
+                    {!(cita.fecha instanceof Date) && (
+                      <div style={{ fontSize: 18, fontWeight: 'regular' }}>
+                        {cita.fecha.toDate().toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div
                   style={{
-                    marginTop: "auto",
+                    marginTop: 'auto',
                     marginBottom: 10,
                     marginLeft: 22,
-                    display: "flex",
-                    flexDirection: "row",
+                    display: 'flex',
+                    flexDirection: 'row',
                     fontSize: 14,
-                    fontWeight: "light",
+                    fontWeight: 'light',
                     height: 40,
                     width: 200,
                   }}
@@ -368,40 +445,40 @@ function Agenda(props) {
           <div
             style={{
               height: 60,
-              borderRadius: "0 0 13px 13px",
-              backgroundColor: "#EDF9FF",
+              borderRadius: '0 0 13px 13px',
+              backgroundColor: '#EDF9FF',
               marginBottom: 40,
-              position: "relative",
+              position: 'relative',
             }}
           >
             <div
               style={{
                 height: 60,
-                width: "100%",
-                position: "absolute",
+                width: '100%',
+                position: 'absolute',
               }}
             >
               <div
                 style={{
                   height: 60,
-                  width: "100%",
-                  position: "relative",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: '100%',
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <div
                   style={{
                     height: 60,
-                    borderRadius: "0 0 13px 13px",
-                    backgroundColor: "#ACE4FE",
-                    position: "absolute",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    borderRadius: '0 0 13px 13px',
+                    backgroundColor: '#ACE4FE',
+                    position: 'absolute',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     width: 92,
                     fontSize: 60,
                   }}
@@ -411,7 +488,7 @@ function Agenda(props) {
                   }}
                 >
                   <AddRoundedIcon
-                    style={{ fill: "#626262" }}
+                    style={{ fill: '#626262' }}
                     fontSize="inherit"
                   />
                 </div>

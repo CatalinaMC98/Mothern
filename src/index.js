@@ -8,6 +8,10 @@ import { FirebaseAppProvider } from "reactfire";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/messaging";
+import "firebase/storage";
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyAoxPLe-nP6Q3JoswTT-_Cc8IpoLew_10U",
   authDomain: "mothern-eac5a.firebaseapp.com",
