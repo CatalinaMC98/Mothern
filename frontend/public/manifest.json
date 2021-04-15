@@ -1,0 +1,38 @@
+{
+  "theme_color": "#ffffff",
+  "background_color": "#E6DEFF",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "app_name": "Mothern",
+  "short_name": "Mothern",
+  "name": "Mothern",
+  "description": "Mothern",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

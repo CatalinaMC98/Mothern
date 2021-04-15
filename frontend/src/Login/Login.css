@@ -1,0 +1,197 @@
+#Rectangle_128 {
+  position: absolute;
+  width: 375px;
+  height: 667px;
+  left: 0px;
+  top: 0px;
+  overflow: visible;
+}
+#Line_1 {
+  fill: transparent;
+  stroke: rgba(255, 255, 255, 1);
+  stroke-width: 1px;
+  stroke-linejoin: miter;
+  stroke-linecap: butt;
+  stroke-miterlimit: 4;
+  shape-rendering: auto;
+}
+.Line_1 {
+  overflow: visible;
+  position: absolute;
+  width: 114px;
+  height: 1px;
+  left: 130.5px;
+  top: 541px;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+}
+#INICIAR_SESIN_ {
+  left: 119px;
+  top: 181px;
+  position: absolute;
+  overflow: visible;
+  width: 139px;
+  white-space: nowrap;
+  text-align: center;
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 1);
+  letter-spacing: 0.3px;
+}
+#Email {
+  left: 59px;
+  top: 271px;
+  position: absolute;
+  overflow: visible;
+  width: 51px;
+  white-space: nowrap;
+  text-align: center;
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 1);
+  letter-spacing: 0.3px;
+}
+#Contrasea {
+  left: 56px;
+  top: 347px;
+  position: absolute;
+  overflow: visible;
+  width: 107px;
+  white-space: nowrap;
+  text-align: center;
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 1);
+  letter-spacing: 0.3px;
+}
+#Rectangle_19 {
+  fill: rgba(173, 228, 255, 1);
+}
+.Rectangle_19 {
+  position: absolute;
+  overflow: visible;
+  width: 150px;
+  height: 33px;
+  left: 113px;
+  top: 476px;
+  --web-animation: fadein 0.3s ease-out;
+  --web-action-type: page;
+  --web-action-target: MEN__PRINCIPAL.html;
+  cursor: pointer;
+}
+#INICIAR {
+  left: 155px;
+  top: 482px;
+  position: absolute;
+  overflow: visible;
+  width: 67px;
+  white-space: nowrap;
+  text-align: center;
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 1);
+  letter-spacing: 0.3px;
+}
+#Grupo_11 {
+  position: absolute;
+  width: 149px;
+  height: 31.932px;
+  left: 113px;
+  top: 81.068px;
+  overflow: visible;
+}
+#Group_119 {
+  position: absolute;
+  width: 292px;
+  height: 37px;
+  left: 42px;
+  top: 297px;
+  overflow: visible;
+}
+#Rectangle_15 {
+  fill: rgba(173, 228, 255, 1);
+}
+.Rectangle_15 {
+  position: absolute;
+  overflow: visible;
+  width: 292px;
+  height: 33px;
+  left: 0px;
+  top: 4px;
+}
+#Rectangle_129 {
+  fill: rgba(255, 255, 255, 1);
+}
+.Rectangle_129 {
+  position: absolute;
+  overflow: visible;
+  width: 292px;
+  height: 33px;
+  left: 0px;
+  top: 0px;
+}
+#Group_120 {
+  position: absolute;
+  width: 292px;
+  height: 37px;
+  left: 42px;
+  top: 373px;
+  overflow: visible;
+}
+#Rectangle_15_bc {
+  fill: rgba(173, 228, 255, 1);
+}
+.Rectangle_15_bc {
+  position: absolute;
+  overflow: visible;
+  width: 292px;
+  height: 33px;
+  left: 0px;
+  top: 4px;
+}
+#Rectangle_129_bd {
+  fill: rgba(255, 255, 255, 1);
+}
+.Rectangle_129_bd {
+  position: absolute;
+  overflow: visible;
+  width: 292px;
+  height: 33px;
+  left: 0px;
+  top: 0px;
+}
+#Image_7 {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  left: 170px;
+  top: 601px;
+  overflow: visible;
+}
+#Iniciar_sesin_con_Google {
+  left: 90px;
+  top: 565px;
+  position: absolute;
+  overflow: visible;
+  width: 197px;
+  white-space: nowrap;
+  text-align: center;
+  font-family: Lato;
+  font-style: italic;
+  font-weight: normal;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 1);
+  letter-spacing: 0.3px;
+}
+
+.input-filler:focus,
+.input-filler:focus {
+  outline: none;
+}
