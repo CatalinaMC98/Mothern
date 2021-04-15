@@ -1,21 +1,21 @@
-import Home from "./Home/Home";
-import Inicial from "./Inicial/Inicial";
-import Login from "./Login/Login";
-import Register from "./Register/Register";
-import RegisterForm from "./RegisterForm/RegisterForm";
-import MiCuerpo from "./MiCuerpo/MiCuerpo";
-import Nutricion from "./Nutricion/Nutricion";
-import Agenda from "./Agenda/Agenda";
-import { Switch, Route, withRouter } from "react-router-dom";
-import DateFnsUtils from "@date-io/date-fns"; // choose your lib
-import esLocale from "date-fns/locale/es";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Home from './Home/Home';
+import Inicial from './Inicial/Inicial';
+import Login from './Login/Login';
+import Register from './Register/Register';
+import RegisterForm from './RegisterForm/RegisterForm';
+import MiCuerpo from './MiCuerpo/MiCuerpo';
+import Nutricion from './Nutricion/Nutricion';
+import Agenda from './Agenda/Agenda';
+import { Switch, Route, withRouter } from 'react-router-dom';
+import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import esLocale from 'date-fns/locale/es';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useUser, useFirestore } from "reactfire";
+import { useUser, useFirestore } from 'reactfire';
 
 function App(props) {
   const { data: user } = useUser();
@@ -27,11 +27,11 @@ function App(props) {
     if (loggedin) {
       if (userData === null) {
         firestore
-          .collection("userinfo")
+          .collection('userinfo')
           .doc(user?.uid)
           .get()
           .then((response) => {
-            setUserData(response.data());
+            setUserData(response?.data() || {});
           })
           .catch((err) => {
             console.error(err);
@@ -42,9 +42,9 @@ function App(props) {
       // console.log(userData);
       if (
         !userData?.registerForm &&
-        props.location.pathname !== "/registerform"
+        props.location.pathname !== '/registerform'
       ) {
-        props.history.push("/registerform");
+        props.history.push('/registerform');
       }
 
       return (

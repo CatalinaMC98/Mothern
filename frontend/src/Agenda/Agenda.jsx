@@ -6,7 +6,6 @@ import { useUser, useMessaging, useFirestore } from 'reactfire';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import { DateTimePicker } from '@material-ui/pickers';
 function Agenda(props) {
-  //TODO, VAPID SE DEBERÍA CONSEGUIR TAMBIÉN EN PANTALLA INICIAL
   const PUBLIC_VAPID_KEY =
     'BGUFszf55f2NtTl0KW1eWjmM9gs000O43kRKRMgUwIn_NadJObUeFZ7xHnfNo9AAYXMEdLPOIv96jqFbfG5wtNY';
 

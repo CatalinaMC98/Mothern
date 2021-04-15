@@ -22,7 +22,7 @@ function Home(props) {
       .doc(user?.uid)
       .get()
       .then((response) => {
-        var citas = response.data().citas;
+        var citas = response.data()?.citas;
         citas = citas === undefined || citas === null ? [] : citas;
 
         const notificaciones = [];
@@ -101,7 +101,7 @@ function Home(props) {
 
   const calcSemana = () => {
     var today = new Date();
-    var lastMenstruation = info?.mDate.toDate();
+    var lastMenstruation = info?.mDate?.toDate();
 
     return Math.round((today - lastMenstruation) / (7 * 24 * 60 * 60 * 1000));
   };
@@ -122,11 +122,38 @@ function Home(props) {
   }, []);
 
   const logout = () => {
-    //TODO, borrar dispositivo de pushtokens
-
-    auth.signOut().then(() => {
-      props.history.push('/');
-    });
+    messaging
+      .getToken({ vapidKey: PUBLIC_VAPID_KEY })
+      .then((currentToken) => {
+        if (currentToken) {
+          console.log('Current Token for FCM');
+          console.log(currentToken);
+          firestore
+            .collection('userinfo')
+            .doc(user?.uid)
+            .collection('pushtokens')
+            .doc(currentToken)
+            .set({
+              active: false,
+            })
+            .then(() => {
+              auth.signOut().then(() => {
+                props.history.push('/');
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          console.log(
+            'No registration token available. Request permission to generate one.'
+          );
+        }
+      })
+      .catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+        // ...
+      });
   };
 
   const renderMenu = () => {
