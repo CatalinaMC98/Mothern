@@ -1,35 +1,85 @@
 import { withRouter } from 'react-router-dom';
 import './Home.css';
 import React, { useRef, useEffect, useState } from 'react';
-import { useAuth } from 'reactfire';
+import { useAuth, useUser, useMessaging, useFirestore } from 'reactfire';
 
 function Home(props) {
   const info = props.userInfo;
 
+  const firestore = useFirestore();
+  const { data: user } = useUser();
+  const messaging = useMessaging();
   const auth = useAuth();
 
-  const notificaciones = [
-    {
-      fecha: new Date('2020/08/17'),
-      espacialidad: 'CARDIOO',
-      centroMedico: 'reina sofia',
-    },
-    {
-      fecha: new Date('2020/08/17'),
-      espacialidad: 'CARDIOO',
-      centroMedico: 'reina sofia',
-    },
-    {
-      fecha: new Date('2020/08/17'),
-      espacialidad: 'CARDIOO',
-      centroMedico: 'reina sofia',
-    },
-    {
-      fecha: new Date('2020/08/17'),
-      espacialidad: 'CARDIOO',
-      centroMedico: 'reina sofia',
-    },
-  ];
+  const PUBLIC_VAPID_KEY =
+    'BGUFszf55f2NtTl0KW1eWjmM9gs000O43kRKRMgUwIn_NadJObUeFZ7xHnfNo9AAYXMEdLPOIv96jqFbfG5wtNY';
+
+  const [notificaciones, setNotificaciones] = useState([]);
+
+  useEffect(() => {
+    firestore
+      .collection('userinfo')
+      .doc(user?.uid)
+      .get()
+      .then((response) => {
+        var citas = response.data().citas;
+        citas = citas === undefined || citas === null ? [] : citas;
+
+        const notificaciones = [];
+        const currDate = new Date();
+        citas.forEach((cita) => {
+          if (cita.fecha.toDate() >= currDate) {
+            notificaciones.push({
+              fecha: cita.fecha.toDate(),
+              especialidad: cita.especialidad,
+              centro: cita.centro,
+            });
+          }
+        });
+
+        setNotificaciones(notificaciones);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    // Get registration token. Initially this makes a network call, once retrieved
+    // subsequent calls to getToken will return from cache.
+    messaging
+      .getToken({ vapidKey: PUBLIC_VAPID_KEY })
+      .then((currentToken) => {
+        if (currentToken) {
+          // Send the token to your server and update the UI if necessary
+          // ...
+          console.log('Current Token for FCM');
+          console.log(currentToken);
+          firestore
+            .collection('userinfo')
+            .doc(user?.uid)
+            .collection('pushtokens')
+            .doc(currentToken)
+            .set({
+              active: true,
+            })
+            .then(() => {
+              console.log('persisted token for user');
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          // Show permission request UI
+          console.log(
+            'No registration token available. Request permission to generate one.'
+          );
+          // ...
+        }
+      })
+      .catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+        // ...
+      });
+  }, [user]);
+
   const containerRef = useRef();
   const [containerSize, setContainerSize] = useState({
     width: 0,
@@ -339,7 +389,7 @@ function Home(props) {
                     }}
                   >
                     <div style={{ marginTop: 22, marginLeft: 22 }}>
-                      {notif.espacialidad}
+                      {notif.especialidad}
                     </div>
                     <div
                       style={{
@@ -381,7 +431,7 @@ function Home(props) {
                       width: 200,
                     }}
                   >
-                    {notif.centroMedico}
+                    {notif.centro}
                   </div>
                 </div>
               );

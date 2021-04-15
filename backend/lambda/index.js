@@ -2,9 +2,10 @@ var admin = require('firebase-admin');
 
 var serviceAccount = require('./mothern-eac5a-firebase-adminsdk-ului0-a097299e43.json');
 
-const SCRIPT_RUN_TIME = 20;
+const SCRIPT_RUN_TIME = new Date().getHours();
+const UTC_TIME_ZONE = -5;
 
-exports.handler = async (event) => {
+exports.handler = (event, context, callback) => {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
   });
@@ -47,11 +48,14 @@ exports.handler = async (event) => {
           });
         }
       });
-      //event
+      callback(null, 200);
     });
 
   const sendCitaPushNotification = (registrationTokens, place, spec, date) => {
-    var hours = date.getHours() <= 9 ? `0${date.getHours()}` : date.getHours();
+    console.log(date.getTimezoneOffset());
+    var hours = date.getHours() + date.getTimezoneOffset() / 60 + UTC_TIME_ZONE;
+    hours = hours < 0 ? 24 + hours : hours;
+    hours = hours <= 9 ? `0${hours}` : hours;
     var minutes =
       date.getMinutes() <= 9 ? `0${date.getMinutes()}` : date.getMinutes();
 
