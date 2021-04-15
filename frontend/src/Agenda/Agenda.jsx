@@ -139,6 +139,7 @@ function Agenda(props) {
                   width: 'calc(100% - 10px)',
                   marginLeft: 5,
                 }}
+                InputProps={{ inputProps: { maxLength: 100 } }}
                 label="Especialidad Medica"
                 defaultValue={''}
                 name="especialidad"
@@ -164,6 +165,7 @@ function Agenda(props) {
                   marginLeft: 5,
                 }}
                 label="Centro médico"
+                InputProps={{ inputProps: { maxLength: 100 } }}
                 defaultValue={''}
                 name="centro"
                 onChange={(e) => {
