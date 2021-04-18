@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import './RegisterForm.css';
-import { DatePicker } from '@material-ui/pickers';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import TextField from '@material-ui/core/TextField';
-import Switch from '@material-ui/core/Switch';
-import { withStyles } from '@material-ui/core/styles';
-import { lightBlue } from '@material-ui/core/colors';
-import Create from './create/Create';
-import { useUser, useFirestore } from 'reactfire';
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import "./RegisterForm.css";
+import { DatePicker } from "@material-ui/pickers";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import NativeSelect from "@material-ui/core/NativeSelect";
+import TextField from "@material-ui/core/TextField";
+import Switch from "@material-ui/core/Switch";
+import { withStyles } from "@material-ui/core/styles";
+import { lightBlue } from "@material-ui/core/colors";
+import Create from "./create/Create";
+import { useUser, useFirestore } from "reactfire";
 
 const PurpleSwitch = withStyles({
   switchBase: {
     color: lightBlue[100],
-    '&$checked': {
+    "&$checked": {
       color: lightBlue[200],
     },
-    '&$checked + $track': {
+    "&$checked + $track": {
       backgroundColor: lightBlue[200],
     },
   },
@@ -28,16 +28,15 @@ const PurpleSwitch = withStyles({
 
 function RegisterForm(props) {
   const { data: user } = useUser();
-  const personalInfoRef = useFirestore().collection('userinfo').doc(user.uid);
-
+  const personalInfoRef = useFirestore().collection("userinfo").doc(user.uid);
   const [step, setStep] = useState(1);
   const [info, setInfo] = useState({
-    name: props.userInfo?.name || user.displayName || '',
+    name: props.userInfo?.name || user.displayName || "",
     mDate: props.userInfo?.mDate?.toDate() || new Date(),
     birth: props.userInfo?.birth?.toDate() || new Date(),
-    height: props.userInfo?.height || 0,
-    bloodLetterType: props.userInfo?.bloodLetterType || 'A',
-    bloodSignType: props.userInfo?.bloodSignType || '+',
+    height: props.userInfo?.height || 1,
+    bloodLetterType: props.userInfo?.bloodLetterType || "A",
+    bloodSignType: props.userInfo?.bloodSignType || "+",
     weightBefore: props.userInfo?.weightBefore || 0,
     currentWeight: props.userInfo?.currentWeight || 0,
     tuber: props.userInfo?.tuber || false,
@@ -47,15 +46,16 @@ function RegisterForm(props) {
     ciru: props.userInfo?.ciru || false,
     infer: props.userInfo?.infer || false,
     cardio: props.userInfo?.cardio || false,
-    prefAlim: props.userInfo?.prefAlim || 'Vegetariano',
+    prefAlim: props.userInfo?.prefAlim || "Vegetariano",
+    suplementos: { inputValue: "", value: props.userInfo?.suplementos || [] },
     alcohol: props.userInfo?.alcohol || false,
     drogas: props.userInfo?.drogas || false,
     cigarrillo: props.userInfo?.cigarrillo || false,
-    empleo: props.userInfo?.empleo || 'Tiempo Completo',
-    estadoCiv: props.userInfo?.estadoCiv || 'Soltera',
-    titulo: props.userInfo?.titulo || 'Ninguna',
+    empleo: props.userInfo?.empleo || "Tiempo Completo",
+    estadoCiv: props.userInfo?.estadoCiv || "Soltera",
+    titulo: props.userInfo?.titulo || "Ninguna",
     estrato: props.userInfo?.estrato || 1,
-    regimen: props.userInfo?.regimen || 'Subsidiado',
+    regimen: props.userInfo?.regimen || "Subsidiado",
     registerForm: true,
   });
   const handleNext = () => {
@@ -65,12 +65,13 @@ function RegisterForm(props) {
       setStep(3);
     } else {
       //Mandar información a Firebase
+      const infTemp = { ...info, suplementos: info.suplementos.value };
       personalInfoRef
-        .set(info)
+        .set(infTemp)
         .then(() => {
           window.location.href = window.location.href.replace(
             props.location.pathname,
-            '/'
+            "/"
           );
         })
         .catch((err) => {
@@ -88,11 +89,11 @@ function RegisterForm(props) {
   };
   const calcTitle = () => {
     if (step === 1) {
-      return 'Tu información personal';
+      return "Tu información personal";
     } else if (step === 2) {
-      return 'Información personal';
+      return "Información personal";
     } else {
-      return 'Finalización';
+      return "Finalización";
     }
   };
 
@@ -114,8 +115,8 @@ function RegisterForm(props) {
         <div>
           <TextField
             style={{
-              border: 'none',
-              width: 'calc(100% - 66px)',
+              border: "none",
+              width: "calc(100% - 66px)",
             }}
             label="Nombre Completo"
             defaultValue={info.name}
@@ -124,12 +125,11 @@ function RegisterForm(props) {
           />
           <div className="lblForm">Fecha de la última menstruación</div>
           <DatePicker
+            title={info.mDate}
             style={{ marginTop: 5 }}
             value={info.mDate}
             onChange={(val) => {
-              let inf = info;
-              inf.mDate = val;
-              setInfo(inf);
+              setInfo({ ...info, mDate: new Date(val.toString()) });
             }}
           />
           <div className="lblForm">Fecha de nacimiento</div>
@@ -137,18 +137,16 @@ function RegisterForm(props) {
             style={{ marginTop: 5 }}
             value={info.birth}
             onChange={(val) => {
-              let inf = info;
-              inf.birth = val;
-              setInfo(inf);
+              setInfo({ ...info, birth: new Date(val.toString()) });
             }}
           />
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div className="lblForm">Estatura (m)</div>
               <TextField
                 style={{
                   marginTop: 10,
-                  border: 'none',
+                  border: "none",
                   width: 100,
                 }}
                 type="number"
@@ -158,11 +156,11 @@ function RegisterForm(props) {
                 onChange={handleChange}
               />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div className="lblForm" style={{ marginLeft: 33 }}>
                 Grupo sanguíneo
               </div>
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div style={{ display: "flex", flexDirection: "row" }}>
                 <FormControl
                   style={{ width: 50, marginTop: 10, marginLeft: 35 }}
                 >
@@ -194,13 +192,13 @@ function RegisterForm(props) {
               </div>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div className="lblForm">Peso pregestacional (kg)</div>
               <TextField
                 style={{
                   marginTop: 15,
-                  border: 'none',
+                  border: "none",
                   width: 60,
                 }}
                 InputProps={{ inputProps: { min: 0, max: 800 } }}
@@ -210,12 +208,12 @@ function RegisterForm(props) {
                 onChange={handleChange}
               />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div className="lblForm">Peso actual (kg)</div>
               <TextField
                 style={{
                   marginTop: 10,
-                  border: 'none',
+                  border: "none",
                   width: 60,
                 }}
                 InputProps={{ inputProps: { min: 0, max: 800 } }}
@@ -234,8 +232,8 @@ function RegisterForm(props) {
           <div
             className="lblForm"
             style={{
-              width: '100%',
-              borderBottom: '1px solid #626262',
+              width: "100%",
+              borderBottom: "1px solid #626262",
               paddingBottom: 5,
               marginTop: 70,
             }}
@@ -243,13 +241,13 @@ function RegisterForm(props) {
             Antecedentes
           </div>
           <div className="checkBoxCont">
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 5,
                 }}
@@ -262,16 +260,16 @@ function RegisterForm(props) {
                     checked={info.tuber}
                     onChange={handleChangeCheck}
                     name="tuber"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 5,
                 }}
@@ -285,16 +283,16 @@ function RegisterForm(props) {
                     onChange={handleChangeCheck}
                     color="primary"
                     name="diab"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 5,
                 }}
@@ -308,16 +306,16 @@ function RegisterForm(props) {
                     onChange={handleChangeCheck}
                     color="primary"
                     name="hiper"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 5,
                 }}
@@ -331,16 +329,16 @@ function RegisterForm(props) {
                     onChange={handleChangeCheck}
                     color="primary"
                     name="pre"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 5,
                 }}
@@ -354,16 +352,16 @@ function RegisterForm(props) {
                     onChange={handleChangeCheck}
                     color="primary"
                     name="ciru"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 5,
                 }}
@@ -377,16 +375,16 @@ function RegisterForm(props) {
                     onChange={handleChangeCheck}
                     color="primary"
                     name="infer"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 5,
                 }}
@@ -400,7 +398,7 @@ function RegisterForm(props) {
                     onChange={handleChangeCheck}
                     color="primary"
                     name="cardio"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
@@ -409,8 +407,8 @@ function RegisterForm(props) {
           <div
             className="lblForm"
             style={{
-              width: '100%',
-              borderBottom: '1px solid #626262',
+              width: "100%",
+              borderBottom: "1px solid #626262",
               paddingBottom: 5,
               marginTop: 15,
             }}
@@ -418,7 +416,7 @@ function RegisterForm(props) {
             Hábitos
           </div>
           <div className="lblForm">Preferencias alimenticias</div>
-          <FormControl style={{ width: '100%', marginTop: 10 }}>
+          <FormControl style={{ width: "100%", marginTop: 10 }}>
             <NativeSelect
               value={info.prefAlim}
               name="prefAlim"
@@ -432,16 +430,21 @@ function RegisterForm(props) {
           </FormControl>
           <div className="lblForm">Consumo de suplementos</div>
           <div style={{ width: 250, marginTop: 10, marginBottom: 20 }}>
-            <Create />
+            <Create
+              state={info.suplementos}
+              setState={(state) => {
+                setInfo({ ...info, suplementos: state });
+              }}
+            />
           </div>
           <div className="checkBoxCont">
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 5,
                 }}
@@ -454,16 +457,16 @@ function RegisterForm(props) {
                     checked={info.alcohol}
                     onChange={handleChangeCheck}
                     name="alcohol"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 5,
                 }}
@@ -477,16 +480,16 @@ function RegisterForm(props) {
                     onChange={handleChangeCheck}
                     color="primary"
                     name="drogas"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
                   marginTop: 5,
                   marginBottom: 15,
                 }}
@@ -500,7 +503,7 @@ function RegisterForm(props) {
                     onChange={handleChangeCheck}
                     color="primary"
                     name="cigarrillo"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 </div>
               </div>
@@ -517,7 +520,7 @@ function RegisterForm(props) {
             onChange={handleChangeCheck}
             color="primary"
             name="lee"
-            inputProps={{ 'aria-label': 'primary checkbox' }}
+            inputProps={{ "aria-label": "primary checkbox" }}
           />
           <div className="lblForm" style={{ marginTop: 5 }}>
             Educación
@@ -536,8 +539,8 @@ function RegisterForm(props) {
             </NativeSelect>
             <FormHelperText></FormHelperText>
           </FormControl>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div className="lblForm">Estado civil</div>
               <FormControl style={{ width: 120, marginTop: 10 }}>
                 <NativeSelect
@@ -553,7 +556,7 @@ function RegisterForm(props) {
                 <FormHelperText></FormHelperText>
               </FormControl>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div className="lblForm" style={{ marginLeft: 20 }}>
                 Empleo
               </div>
@@ -593,15 +596,15 @@ function RegisterForm(props) {
             <FormHelperText></FormHelperText>
           </FormControl>
           <div className="lblForm">Régimen de salud</div>
-          <FormControl style={{ width: 50, marginTop: 10 }}>
+          <FormControl style={{ width: 150, marginTop: 10 }}>
             <NativeSelect
               value={info.regimen}
               name="regimen"
               onChange={handleChange}
             >
-              <option value={'Subsidiado'}>Subsidiado</option>
-              <option value={'Contributivo'}>Contributivo</option>
-              <option value={'Vinculado'}>Vinculado</option>
+              <option value={"Subsidiado"}>Subsidiado</option>
+              <option value={"Contributivo"}>Contributivo</option>
+              <option value={"Vinculado"}>Vinculado</option>
             </NativeSelect>
             <FormHelperText></FormHelperText>
           </FormControl>
@@ -616,7 +619,7 @@ function RegisterForm(props) {
           className="registerFormGoBack"
           src="Path_1020.png"
           onClick={goBack}
-          style={{ visibility: step === 1 ? 'hidden' : 'visible' }}
+          style={{ visibility: step === 1 ? "hidden" : "visible" }}
         />
         <div className="registerFormGoBackTitle">{calcTitle()}</div>
       </div>

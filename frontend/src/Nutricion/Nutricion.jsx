@@ -1,7 +1,7 @@
-import { withRouter } from 'react-router-dom';
-import './Nutricion.css';
-import React, { useState, useEffect } from 'react';
-import { useFirestore, useStorage } from 'reactfire';
+import { withRouter } from "react-router-dom";
+import "./Nutricion.css";
+import React, { useState, useEffect } from "react";
+import { useFirestore, useStorage } from "reactfire";
 function Nutricion(props) {
   const [current, setCurrent] = useState(undefined);
   const firestore = useFirestore();
@@ -22,7 +22,7 @@ function Nutricion(props) {
 
   useEffect(() => {
     firestore
-      .collection('nutricion')
+      .collection("nutricion")
       .get()
       .then((response) => {
         const responseData = [];
@@ -63,7 +63,7 @@ function Nutricion(props) {
       {current !== undefined && (
         <div
           style={{
-            position: 'absolute',
+            position: "absolute",
           }}
         >
           <div
@@ -74,34 +74,37 @@ function Nutricion(props) {
           ></div>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              height: 'calc(100vh)',
-              width: '100vw',
-              overflow: 'hidden',
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+              height: "calc(100vh)",
+              width: "100vw",
+              overflow: "hidden",
               zIndex: 10,
+            }}
+            onClick={() => {
+              setCurrent(undefined);
             }}
           >
             <img
               className="imageViewer"
               src={current.fullscreen}
               style={{
-                position: 'absolute',
+                position: "absolute",
 
                 zIndex: 14,
               }}
             ></img>
             <div
               style={{
-                position: 'absolute',
+                position: "absolute",
                 top: 10,
                 right: 10,
                 height: 20,
                 width: 20,
-                color: 'white',
+                color: "white",
                 zIndex: 16,
               }}
               onClick={() => {
@@ -117,20 +120,20 @@ function Nutricion(props) {
       <div
         className="micuerpoContainer"
         style={{
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <div
           className="micuerpoHeader"
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <div style={{ position: 'relative', top: -30, left: -78 }}>
+          <div style={{ position: "relative", top: -30, left: -78 }}>
             <div id="Group_11">
               <div id="Group_9">
                 <div id="Group_1">
@@ -212,13 +215,13 @@ function Nutricion(props) {
         </div>
         <img
           style={{
-            position: 'absolute',
+            position: "absolute",
             left: 30,
             top: 25,
           }}
           src="Path_1046.png"
           onClick={() => {
-            props.history.push('/');
+            props.history.push("/");
           }}
         ></img>
         <div className="micuerpoCard">

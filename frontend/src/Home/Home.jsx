@@ -399,6 +399,9 @@ function Home(props) {
             {notificaciones.map((notif, index) => {
               return (
                 <div
+                onClick={()=>{
+                  props.history.push("/agenda")
+                }}
                   key={index}
                   className="cardAgenda"
                   style={{

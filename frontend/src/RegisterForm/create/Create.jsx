@@ -28,11 +28,7 @@ const createOption = (label) => ({
   value: label,
 });
 
-export default function CreatableInputOnly() {
-  const [state, setState] = useState({
-    inputValue: "",
-    value: [],
-  });
+export default function CreatableInputOnly({ setState, state }) {
   const handleChange = (value, actionMeta) => {
     console.group("Value Changed");
     console.groupEnd();
