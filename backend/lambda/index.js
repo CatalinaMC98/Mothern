@@ -1,6 +1,6 @@
 var admin = require('firebase-admin');
 
-var serviceAccount = require('./mothern-eac5a-firebase-adminsdk-ului0-a097299e43.json');
+var serviceAccount = require('./webappmothern-firebase-adminsdk-h7jft-03a8d408bb.json');
 
 const SCRIPT_RUN_TIME = new Date().getHours();
 const UTC_TIME_ZONE = -5;
